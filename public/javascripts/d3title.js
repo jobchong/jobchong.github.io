@@ -1,4 +1,4 @@
-var alphabet = ["fun", "powerful", "verifiable", "formal", "groundbreaking", "compiled", "new"]
+wwvar alphabet = ["fun", "powerful", "verifiable", "formal", "groundbreaking", "compiled", "new"]
 var start = ["new"]
 
 var width = 400,

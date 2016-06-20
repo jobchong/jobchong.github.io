@@ -33,7 +33,6 @@ $(function() {
 		    q: request.term
 		},
 		success: function( data ) {
-		    var result = [];
 		    var companyNames = [];
 		    var regNo = [];
 		    for (var i = 0; i < data.items.length; i++) {
@@ -53,12 +52,10 @@ $(function() {
 		},
 		minLength: 3,
 		select: function( event, ui ) {
-		    
+		    console.log(ui);
 		    log( ui.item ?
 			 "Selected: " + ui.item.label :
 			 "Nothing selected, input was " + this.value);
-		    console.log(ui.item)
-		    
 		},
 	
 		open: function() {

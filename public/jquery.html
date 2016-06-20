@@ -40,10 +40,12 @@
         });
       },
       minLength: 3,
-      select: function( event, ui ) {
-        log( ui.item ?
-          "Selected: " + ui.item.label :
-          "Nothing selected, input was " + this.value);
+			  select: function( event, ui ) {
+			  for (var i = 0; i < ui.item.items.length; i++) {
+        log( ui.item.items[i].title ?
+          "Selected: " + ui.item.items[i].title :
+					      "Nothing selected, input was " + this.value);
+					      }
       },
       open: function() {
         $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );

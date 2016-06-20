@@ -10,7 +10,8 @@
       ajax.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
       ajax.onload = function() {
       console.log(ajax.responseText);
-	var list = JSON.parse(ajax.responseText).map(function(i) { return i.name; });
+      var list = JSON.parse(ajax.responseText);
+      var arrayList = list.keys(obj).map(function (k) {return obj[k] });
 	new Awesomplete(document.querySelector("#ajax-example"),{ list: list });
 };
 ajax.send();

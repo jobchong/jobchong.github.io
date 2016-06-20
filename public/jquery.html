@@ -43,8 +43,8 @@ $(function() {
 
 		    }
 		    for (var a = 0; i < companyNames.length; i++) {
-			var pending = $.extend(companyNames[i], regNo[i]);
-			result.push(pending);
+			$.extend(companyNames[i], regNo[i]);
+			result.push(companyNames[i]);
 		    }
 		    console.log(result);
 		    response(companyNames);

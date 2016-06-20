@@ -21,7 +21,7 @@
 	}
 	
 	$( "#city" ).autocomplete({
-	    
+	    source: function( request, response ) {
 		$.ajax({
 		    beforeSend: function( request ) {
 			request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
@@ -32,7 +32,7 @@
 			q: request.term
 		    },
 		    success: function( data ) {
-			response( data);
+			
 			var companyNames = [];
 			for (var i = 0; i < data.items.length; i++) {
 			    console.log(data.items[i].title);
@@ -41,9 +41,10 @@
 			
 			data = companyNames;
 			console.log(data);
+			response(data);
 		    }
 		});
-	    source: data,
+	    },
 	    minLength: 3,
 	    select: function( event, ui ) {
 		

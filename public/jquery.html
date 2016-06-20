@@ -42,58 +42,59 @@ $(function() {
 			regNo.push(data.items[i].company_number);
 		    }
 		    response(companyNames);
+		    console.log(regNo);
 		},
-		    response: function(data) {
-			$.map( data, function( item ) {
-			    return {
-				title: item.items[0].title,
-				regno: item.items[0].company_number,
-			    }
-			});
-		    },
-		    minLength: 3,
-		    select: function( event, ui ) {
-			
-			log( ui.item.value ?
-			     "Selected: " + ui.item.value :
-			     "Nothing selected, input was " + this.value);
-			console.log(ui);
-			no(ui.item.regno ?
-			    "Selected:" + ui.item.regno :
-			    "Nothing selecetd, input was " + this.value);
-		    },
-		    open: function() {
-			$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-		    },
-		    close: function() {
-			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-		    }
-		});
+		response: function(data) {
+		    $.map( data, function( item ) {
+			return {
+			    title: item.items[0].title,
+			    regno: item.items[0].company_number,
+			}
+		    });
+		},
+		minLength: 3,
+		select: function( event, ui ) {
+		    
+		    log( ui.item.value ?
+			 "Selected: " + ui.item.value :
+			 "Nothing selected, input was " + this.value);
+		    console.log(ui);
+		    no(ui.item.regno ?
+		       "Selected:" + ui.item.regno :
+		       "Nothing selecetd, input was " + this.value);
+		},
+		open: function() {
+		    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+		},
+		close: function() {
+		    $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+		}
+	    });
 	},
     });
 })
 
 
-	</script>
-	    </head>
-	    <body>
-	    
-	    <div class="ui-widget">
-	    <label for="company">Your company: </label>
-	    <input id="company">
-	    Powered by <a href="https://developer.companieshouse.gov.uk/api/docs/">Companies House</a>
-	    </div>
-	    
-	    <div class="ui-widget" style="margin-top:2em; font-family:Arial">
-	    Result:
-	    <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
-	    </div>
+</script>
+    </head>
+    <body>
+    
+    <div class="ui-widget">
+    <label for="company">Your company: </label>
+    <input id="company">
+    Powered by <a href="https://developer.companieshouse.gov.uk/api/docs/">Companies House</a>
+    </div>
+    
+    <div class="ui-widget" style="margin-top:2em; font-family:Arial">
+    Result:
+    <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
+    </div>
 
-	   <div class="ui-widget" style="margin-top:2em; font-family:Arial">
-	    Result:
-	    <div id="no" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
-	    </div>
-	    
+    <div class="ui-widget" style="margin-top:2em; font-family:Arial">
+    Result:
+    <div id="no" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
+    </div>
+    
 
-	</body>
-	    </html>
+</body>
+    </html>

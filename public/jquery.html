@@ -38,12 +38,11 @@
 			    console.log(data.items[i].title);
 			    companyNames.push(data.items[i].title);
 			}
-			
-			data = companyNames;
-			console.log(data);
-			response(data);
+			console.log(companyNames);
+			response(companyNames);
 		    }
 		});
+		console.log(data);
 	    },
 	    minLength: 3,
 	    select: function( event, ui ) {

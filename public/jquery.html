@@ -20,7 +20,7 @@
 	    $( "#log" ).scrollTop( 0 );
 	}
 	
-	$( "#city" ).autocomplete({
+	$( "#company" ).autocomplete({
 	    source: function( request, response ) {
 		$.ajax({
 		    beforeSend: function( request ) {
@@ -51,7 +51,7 @@
 		log( ui.item.value ?
 		     "Selected: " + ui.item.value :
 		     "Nothing selected, input was " + this.value);
-		console.log(u);				      
+		console.log(ui);				      
 	    },
 	    open: function() {
 		$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -66,9 +66,9 @@
     <body>
     
     <div class="ui-widget">
-    <label for="city">Your city: </label>
-    <input id="city">
-    Powered by <a href="http://geonames.org">geonames.org</a>
+    <label for="company">Your company: </label>
+    <input id="company">
+    Powered by <a href="https://developer.companieshouse.gov.uk/api/docs/">Companies House</a>
     </div>
     
     <div class="ui-widget" style="margin-top:2em; font-family:Arial">

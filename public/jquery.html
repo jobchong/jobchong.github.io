@@ -42,11 +42,12 @@ $(function() {
 			regNo.push({value: data.items[i].company_number});
 
 		    }
-		    for (var a = 0; i < companyNames.length; i++) {
-			$.extend(companyNames[i], regNo[i]);
-			result.push(companyNames[i]);
-		    }
-		    console.log(result);
+		    $.extend(companyNames, regNo);
+		    // for (var a = 0; i < companyNames.length; i++) {
+		    // 	$.extend(companyNames[i], regNo[i]);
+		    // 	result.push(companyNames[i]);
+		    // }
+		    console.log(companyNames);
 		    response(companyNames);
 		    
 		},

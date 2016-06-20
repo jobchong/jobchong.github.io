@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="awesomplete-gh-pages/awesomplete.css" />
+    <script src="awesomplete-gh-pages/awesomplete.js" async></script>
+    <script>
+      var ajax = new XMLHttpRequest();
+      ajax.open("GET", "https://api.companieshouse.gov.uk/search/companies", true);
+      ajax.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
+ajax.onload = function() {
+	var list = JSON.parse(ajax.responseText).map(function(i) { return i.items[0].title; });
+	new Awesomplete(document.querySelector("#ajax-example"),{ list: list });
+};
+ajax.send();
+    </script>
+  </head>
+
+  <body>
+    <input id="ajax-example"></input>
+  </body>
+  <input class="awesomplete"
+       data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
+</html>

@@ -22,12 +22,12 @@
  
     $( "#city" ).autocomplete({
       source: function( request, response ) {
-        $.ajax({
-      url: "https://api.companieshouse.gov.uk/search/companies",
-       beforeSend: function( request ) {
-            
-      request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd") + ":");
-      },
+      $.ajax({
+      beforeSend: function( request ) {
+              request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd"));
+              },
+          url: "https://api.companieshouse.gov.uk/search/companies",
+          
           data: {
             q: request.term
           },

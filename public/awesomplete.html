@@ -11,7 +11,7 @@
       ajax.onload = function() {
       console.log(ajax.responseText);
       var list = JSON.parse(ajax.responseText);
-      var arrayList = list.keys(obj).map(function (k) {return obj[k] });
+      var arrayList = Object.keys(list).map(function (k) {return list[k] });
 	new Awesomplete(document.querySelector("#ajax-example"),{ list: list });
 };
 ajax.send();

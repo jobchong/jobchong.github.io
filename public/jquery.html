@@ -61,10 +61,16 @@
 	    }
 	});
     });
-var async = function() {
-    return currentSearch;
+
+function logData() {
+    console.log(currentSearch);
 }
-console.log(async);
+
+function callBack(callback) {
+    return callback;
+}
+
+callBack(logData());
 
 </script>
     </head>

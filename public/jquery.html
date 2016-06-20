@@ -41,6 +41,7 @@ $(function() {
 			companyNames.push(data.items[i].title);
 			regNo.push(data.items[i].company_number);
 		    }
+		    response(companyNames);
 		},
 		    response: function(data) {
 			$.map( data, function( item ) {

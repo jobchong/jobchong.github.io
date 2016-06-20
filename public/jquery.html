@@ -33,24 +33,25 @@ $(function() {
 		    q: request.term
 		},
 		success: function( data ) {
-		    
+		    var result = [];
 		    var companyNames = [];
 		    var regNo = [];
 		    for (var i = 0; i < data.items.length; i++) {
 			console.log(data.items[i].title);
 			companyNames.push(data.items[i].title);
 			regNo.push(data.items[i].company_number);
+
 		    }
-		    response(companyNames);
-		    console.log(regNo);
-		},
-		response: function(data) {
-		    $.map( data, function( item ) {
-			return {
-			    title: item.items[0].title,
-			    regno: item.items[0].company_number,
-			}
+		    companyNames = jQuery.map(companyNames, function(n) {
+			return ("label: " + n)
 		    });
+		    console.log(companyNames);
+		    regNo = jQuery.map(regNo, function(n) {
+			return ("value: " + n)
+		    });
+		    console.log(regNo);
+		    response(companyNames);
+		    
 		},
 		minLength: 3,
 		select: function( event, ui ) {

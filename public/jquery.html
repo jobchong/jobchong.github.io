@@ -42,11 +42,8 @@
       minLength: 3,
 			  select: function( event, data ) {
 			  
-        log( data.items[0].title ?
-          "Selected: " + data.items[0].title :
-	 "Nothing selected, input was " + data.items[0].title);
-	console.log(ui);				      
-      },
+			  console.log(data)
+			  }
       open: function() {
         $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
       },

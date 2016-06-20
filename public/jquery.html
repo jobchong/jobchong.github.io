@@ -42,8 +42,8 @@
       minLength: 3,
 			  select: function( event, ui ) {
 			  
-        log( ui.items ?
-          "Selected: " + ui.items[0].title :
+        log( ui.item.items[0].title ?
+          "Selected: " + ui.item.items[0].title :
 	 "Nothing selected, input was " + this.value);
 					      
       },

@@ -43,9 +43,8 @@ $(function() {
 
 		    }
 		    for (var a = 0; i < companyNames.length; i++) {
-			for (var attrname in regNo) {
-			    companyNames[attrname] = regNo[attrname];
-			}
+			var pending = $.extend(companyNames[i], regNo[i]);
+			result.push(pending);
 		    }
 		    console.log(companyNames);
 		    response(companyNames);

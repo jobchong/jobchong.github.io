@@ -21,7 +21,7 @@
 	}
 	
 	$( "#city" ).autocomplete({
-	    source: function( request, response ) {
+	    
 		$.ajax({
 		    beforeSend: function( request ) {
 			request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
@@ -43,7 +43,7 @@
 			console.log(data);
 		    }
 		});
-	    },
+	    source: data,
 	    minLength: 3,
 	    select: function( event, ui ) {
 		

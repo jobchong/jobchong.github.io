@@ -38,19 +38,12 @@ $(function() {
 		    var regNo = [];
 		    for (var i = 0; i < data.items.length; i++) {
 			console.log(data.items[i].title);
-			companyNames.push(data.items[i][2]);
-			regNo.push(data.items[i].company_number);
+			companyNames.push({label: data.items[i].title});
+			regNo.push({value: data.items[i].company_number});
 
 		    }
 		    console.log(companyNames);
-		    // companyNames = jQuery.map(companyNames, function(n) {
-		    // 	return ("label: "+ n)
-		    // });
-		    // console.log(companyNames);
-		    // regNo = jQuery.map(regNo, function(n) {
-		    // 	return ("value: " + n)
-		    // });
-		    // console.log(regNo);
+		    console.log(regNo);
 		    response(companyNames);
 		    
 		},

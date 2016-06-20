@@ -54,13 +54,10 @@ $(function() {
 		minLength: 3,
 		select: function( event, ui ) {
 		    
-		    log( ui.item.value ?
-			 "Selected: " + ui.item.value :
+		    log( ui.item. ?
+			 "Selected: " + ui.item.label + ui.item.value :
 			 "Nothing selected, input was " + this.value);
-		    console.log(ui);
-		    no(ui.item.regno ?
-		       "Selected:" + ui.item.regno :
-		       "Nothing selecetd, input was " + this.value);
+		   
 		},
 		open: function() {
 		    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );

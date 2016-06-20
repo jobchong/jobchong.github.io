@@ -42,7 +42,7 @@ $(function() {
 			regNo.push({value: data.items[i].company_number});
 
 		    }
-		    $.extend(companyNames, regNo);
+		    $.extend(true, companyNames, regNo);
 		    // for (var a = 0; i < companyNames.length; i++) {
 		    // 	$.extend(companyNames[i], regNo[i]);
 		    // 	result.push(companyNames[i]);

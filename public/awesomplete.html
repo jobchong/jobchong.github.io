@@ -9,7 +9,7 @@
       ajax.open("GET", "https://api.companieshouse.gov.uk/search/companies", true);
       ajax.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
 ajax.onload = function() {
-	var list = JSON.parse(ajax.responseText).map(function(i) { return i.items[0].title; });
+	var list = JSON.parse(ajax.responseText).map(function(i) { return i.kind; });
 	new Awesomplete(document.querySelector("#ajax-example"),{ list: list });
 };
 ajax.send();

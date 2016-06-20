@@ -15,72 +15,84 @@
 </style>
     <script>
     var currentSearch;
-    $(function() {
-	function log( message ) {
-	    $( "<div>" ).text( message ).prependTo( "#log" );
-	    $( "#log" ).scrollTop( 0 );
-	}
-	
-	$( "#company" ).autocomplete({
-	    source: function( request, response ) {
-		$.ajax({
-		    beforeSend: function( request ) {
-			request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
+$(function() {
+    function log( message ) {
+	$( "<div>" ).text( message ).prependTo( "#log" );
+	$( "#log" ).scrollTop( 0 );
+    }
+    
+    $( "#company" ).autocomplete({
+	source: function( request, response ) {
+	    $.ajax({
+		beforeSend: function( request ) {
+		    request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
+		},
+		url: "https://api.companieshouse.gov.uk/search/companies",
+		dataType: "json",
+		data: {
+		    q: request.term
+		},
+		success: function( data ) {
+		    
+		    var companyNames = [];
+		    var regNo = [];
+		    for (var i = 0; i < data.items.length; i++) {
+			console.log(data.items[i].title);
+			companyNames.push(data.items[i].title);
+			regNo.push(data.items[i].company_number);
+		    }
+		},
+		    response: function(data) {
+			$.map( data, function( item ) {
+			    return {
+				title: item.items[0].title,
+				regno: item.items[0].company_number,
+			    }
+			});
 		    },
-		    url: "https://api.companieshouse.gov.uk/search/companies",
-		    dataType: "json",
-		    data: {
-			q: request.term
-		    },
-		    success: function( data ) {
+		    minLength: 3,
+		    select: function( event, ui ) {
 			
-			var companyNames = [];
-			var regNo = [];
-			for (var i = 0; i < data.items.length; i++) {
-			    console.log(data.items[i].title);
-			    companyNames.push(data.items[i].title);
-			    regNo.push(data.items[i].company_number);
-			}
-			console.log(companyNames);
-			console.log(regNo);
-			response(companyNames);
-			currentSearch = data;
+			log( ui.item.value ?
+			     "Selected: " + ui.item.value :
+			     "Nothing selected, input was " + this.value);
+			console.log(ui);
+			no(ui.item.regno ?
+			    "Selected:" + ui.item.regno :
+			    "Nothing selecetd, input was " + this.value);
+		    },
+		    open: function() {
+			$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+		    },
+		    close: function() {
+			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
 		    }
 		});
-	    },
-	    minLength: 3,
-	    select: function( event, ui ) {
-		
-		log( ui.item.value ?
-		     "Selected: " + ui.item.value :
-		     "Nothing selected, input was " + this.value);
-		console.log(ui);				      
-	    },
-	    open: function() {
-		$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-	    },
-	    close: function() {
-		$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-	    }
-	});
+	},
     });
+})
 
 
-</script>
-    </head>
-    <body>
-    
-    <div class="ui-widget">
-    <label for="company">Your company: </label>
-    <input id="company">
-    Powered by <a href="https://developer.companieshouse.gov.uk/api/docs/">Companies House</a>
-    </div>
-    
-    <div class="ui-widget" style="margin-top:2em; font-family:Arial">
-    Result:
-    <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
-    </div>
-    
+	</script>
+	    </head>
+	    <body>
+	    
+	    <div class="ui-widget">
+	    <label for="company">Your company: </label>
+	    <input id="company">
+	    Powered by <a href="https://developer.companieshouse.gov.uk/api/docs/">Companies House</a>
+	    </div>
+	    
+	    <div class="ui-widget" style="margin-top:2em; font-family:Arial">
+	    Result:
+	    <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
+	    </div>
 
-</body>
-    </html>
+	   <div class="ui-widget" style="margin-top:2em; font-family:Arial">
+	    Result:
+	    <div id="no" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
+	    </div>
+	    
+
+	</body>
+	    </html>

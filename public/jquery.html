@@ -55,8 +55,9 @@ $(function() {
 		select: function( event, ui ) {
 		    
 		    log( ui.item ?
-			 "Selected: " + ui.item.label + ui.item.value :
+			 "Selected: " + ui.item.label :
 			 "Nothing selected, input was " + this.value);
+		    console.log(ui.item)
 		    
 		},
 	

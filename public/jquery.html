@@ -27,12 +27,13 @@
               request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
               },
           url: "https://api.companieshouse.gov.uk/search/companies",
-          
+          dataType: json,
           data: {
             q: request.term
           },
           success: function( data ) {
-            response( data );
+      response( data );
+      console.log(data);
           }
         });
       },

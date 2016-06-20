@@ -40,7 +40,7 @@
 			    companyNames.push(data.items[i].title);
 			}
 			console.log(companyNames);
-			response(companyNames);
+			response(data.items[i].title);
 			currentSearch = data;
 		    }
 		});
@@ -62,15 +62,6 @@
 	});
     });
 
-function logData() {
-    console.log(currentSearch);
-}
-
-function callBack(callback) {
-    return callback;
-}
-
-callBack(logData());
 
 </script>
     </head>

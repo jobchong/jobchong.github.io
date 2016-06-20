@@ -32,11 +32,12 @@
 			q: request.term
 		    },
 		    success: function( data ) {
-			response: function(event, data) {
-			    
-			    for (var i = 0; i < data.items.length; i++) {
-				console.log(data.items[i].title);
-			    }
+			response( data);
+			var companyNames = [];
+			for (var i = 0; i < data.items.length; i++) {
+			    console.log(data.items[i].title);
+			    companyNames.push(data.items[i].title);
+			    data = companyNames;
 			}
 		    }
 		});
@@ -47,7 +48,7 @@
 		log( ui.item.value ?
 		     "Selected: " + ui.item.value :
 		     "Nothing selected, input was " + this.value);
-		console.log(ui);				      
+		console.log(u);				      
 	    },
 	    open: function() {
 		$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );

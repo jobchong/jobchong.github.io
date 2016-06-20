@@ -57,8 +57,9 @@ $(function() {
 		    log( ui.item ?
 			 "Selected: " + ui.item.label + ui.item.value :
 			 "Nothing selected, input was " + this.value);
-		   
+		    
 		},
+	
 		open: function() {
 		    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
 		},
@@ -86,10 +87,7 @@ $(function() {
     <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
     </div>
 
-    <div class="ui-widget" style="margin-top:2em; font-family:Arial">
-    Result:
-    <div id="no" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
-    </div>
+  
     
 
 </body>

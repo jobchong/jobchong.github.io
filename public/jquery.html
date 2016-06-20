@@ -14,6 +14,7 @@
 #city { width: 25em; }
 </style>
     <script>
+    var currentSearch;
     $(function() {
 	function log( message ) {
 	    $( "<div>" ).text( message ).prependTo( "#log" );
@@ -40,9 +41,9 @@
 			}
 			console.log(companyNames);
 			response(companyNames);
+			currentSearch = data;
 		    }
 		});
-		console.log(data);
 	    },
 	    minLength: 3,
 	    select: function( event, ui ) {
@@ -60,6 +61,7 @@
 	    }
 	});
     });
+console.log(currentSearch);
 </script>
     </head>
     <body>

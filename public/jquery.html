@@ -70,62 +70,62 @@
 	    </form>
 	  <div class="col-md-4 col-md-offset-4 text-center">
 	    <h2>Result:</h2>
-	    <div id="log" style="height: 200px; width: 400px; overflow: auto" class="ui-widget-content text-center"></div>
+	    <div id="log" class="jumbotron text-center"></div>
 	  </div>
 	</div>
       </div>
     </div>
 	  
 	  <script>
-	    var currentSearch;
-	    $(function() {
-	    function log( message ) {
-	    $( "<div>" ).text( message ).prependTo( "#log" );
-	      $( "#log" ).scrollTop( 0 );
-	      }
-	      
-	      $( "#company" ).autocomplete({
-	      source: function( request, response ) {
-	      $.ajax({
-	      beforeSend: function( request ) {
-	      request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
-	      },
-	      url: "https://api.companieshouse.gov.uk/search/companies",
-	      dataType: "json",
-	      data: {
-	      q: request.term
-	      },
-	      success: function( data ) {
-	      var companyNames = [];
-	      var regNo = [];
-	      for (var i = 0; i < data.items.length; i++) {
-				  console.log(data.items[i].title);
-				  companyNames.push({label: data.items[i].title});
-				  regNo.push({value: data.items[i].company_number});
+var currentSearch;
+$(function() {
+    function log( message ) {
+	$( "<div>" ).text( message ).prependTo( "#log" );
+	$( "#log" ).scrollTop( 0 );
+    }
+    
+    $( "#company" ).autocomplete({
+	source: function( request, response ) {
+	    $.ajax({
+		beforeSend: function( request ) {
+		    request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
+		},
+		url: "https://api.companieshouse.gov.uk/search/companies",
+		dataType: "json",
+		data: {
+		    q: request.term
+		},
+		success: function( data ) {
+		    var companyNames = [];
+		    var regNo = [];
+		    for (var i = 0; i < data.items.length; i++) {
+			console.log(data.items[i].title);
+			companyNames.push({label: data.items[i].title});
+			regNo.push({value: data.items[i].company_number});
 
-				  }
-				  $.extend(true, companyNames, regNo);
-				  console.log(companyNames);
-				  response(companyNames);
-				  
-				  },
-				  });
-				  },
-				  minLength: 3,
-				  select: function( event, ui ) {
-				  log(ui.item ?
-				  "Selected: " + ui.item.label + " Company No: " + ui.item.value:
-				  "Nothing selected, input was " + this.value);
-				  },
-				  
-				  open: function() {
-				  $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-				  },
-				  close: function() {
-				  $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-				  }
-				  });
-				  });
+		    }
+		    $.extend(true, companyNames, regNo);
+		    console.log(companyNames);
+		    response(companyNames);
+		    
+		},
+	    });
+	},
+	minLength: 3,
+	select: function( event, ui ) {
+	    log(ui.item ?
+		"Selected: " + ui.item.label + " Company No: " + ui.item.value:
+		"Nothing selected, input was " + this.value);
+	},
+	
+	open: function() {
+	    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+	},
+	close: function() {
+	    $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+	}
+    });
+});
 
 
 				  </script>

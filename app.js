@@ -29,7 +29,7 @@ app.use('/', routes);
 app.use('/users', users);
 
 
-companiesHouse.search('certsimple', function(err, res){
+var companiesResult = companiesHouse.search('certsimple', function(err, res){
 	console.log(err, res)
 })
 

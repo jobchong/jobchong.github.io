@@ -15,8 +15,9 @@ var privateKey  = fs.readFileSync('public/sslcert/mykey.pem', 'utf8');
 var certificate = fs.readFileSync('public/sslcert/mycert.pem', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
+var slack_token = process.env.SLACK_TOKEN
 
-slack.search.all({process.env.SLACKAPITOKEN, "www"}, (err, data) => {
+slack.search.all({slack_token, "www"}, (err, data) => {
     fs.writeFile('response.json', JSON.stringify(data));
     console.log(data);
 });

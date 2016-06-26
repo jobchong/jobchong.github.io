@@ -14,7 +14,7 @@ var privateKey  = fs.readFileSync('public/sslcert/mykey.pem', 'utf8');
 var certificate = fs.readFileSync('public/sslcert/mycert.pem', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
-https.get('https://slack.com/api/search.all?' + process.env.TOKEN + '&query=www&pretty=1', (res) => {
+https.get('https://slack.com/api/search.all?' + process.env.SLACKAPITOKEN + '&query=www&pretty=1', (res) => {
     console.log('statusCode: ', res.statusCode);
     console.log('headers: ', res.headers);
 

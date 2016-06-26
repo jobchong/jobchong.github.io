@@ -30,8 +30,15 @@ app.use('/users', users);
 
 
 var companiesResult = companiesHouse.search('certsimple', function(err, res){
-	console.log(err, res)
+    console.log(err, res);
+    return res;
 })
+
+fs.writeFile('message.txt', companiesResult, (err) => {
+  if (err) throw err;
+  console.log('companiesResult');
+});
+
 
 
 // catch 404 and forward to error handler

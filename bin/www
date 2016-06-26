@@ -17,24 +17,24 @@ var credentials = {key: privateKey, cert: certificate};
 
 var slacktoken = process.env.SLACKAPITOKEN
 
-slack.search.all({slacktoken, 'www'}, (err, data) => {
-    fs.writeFile('slackresponse.json', JSON.stringify(data), (err) => {
-	if (err) throw err;
-	console.log(data);
-    });
-});
-
-// https.get('https://slack.com/api/search.all?' + process.env.SLACKAPITOKEN + '&query=www&pretty=1', (res) => {
-//     console.log('statusCode: ', res.statusCode);
-//     console.log('headers: ', res.headers);
-//     console.log(res);
-//     res.on('data', function(d) {
-//     	fs.writeFile('response.json', JSON.stringify(d))
-//     	process.stdout.write(d);
+// slack.search.all({slacktoken, 'www'}, (err, data) => {
+//     fs.writeFile('slackresponse.json', JSON.stringify(data), (err) => {
+// 	if (err) throw err;
+// 	console.log(data);
 //     });
-// }).on('error', (e) => {
-//     console.error(e);
 // });
+
+https.get('https://slack.com/api/search.all?' + slacktoken + '&query=www&pretty=1', (res) => {
+    console.log('statusCode: ', res.statusCode);
+    console.log('headers: ', res.headers);
+    console.log(res);
+    res.on('data', function(d) {
+    	fs.writeFile('response.json', JSON.stringify(d));
+    	console.log(d);
+    });
+}).on('error', (e) => {
+    console.error(e);
+});
 
 /**
  * Get port from environment and store in Express.

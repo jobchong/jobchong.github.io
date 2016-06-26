@@ -30,15 +30,13 @@ app.use('/', routes);
 app.use('/users', users);
 
 
-function ret() {
-    companiesHouse.search('certsimple', function(err, res) {
-	return res;
-    });
-}
+var result = companiesHouse.search('certsimple', function(err, res) {
+    return res;
+});
 
-fs.writeFile('message.txt', ret(), (err) => {
+fs.writeFile('message.txt', result, (err) => {
     if (err) throw err;
-    console.log(ret());
+    console.log(result);
 });
 
 

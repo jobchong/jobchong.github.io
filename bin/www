@@ -39,7 +39,7 @@ var slacktoken = process.env.SLACKAPITOKEN
 console.log(slacktoken);
 
 var options = {
-    hostname: 'https://slack.com',
+    hostname: 'slack.com',
     path: '/api/search.all?token=' + slacktoken + '&query=www&pretty=1'
 };
 

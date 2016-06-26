@@ -4,8 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var companiesHouse = require('companies-house')('dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd');
-var fs = require('fs');
+
+// var companiesHouse = require('companies-house')('dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd');
+// var fs = require('fs');
 
 
 var routes = require('./routes/index');
@@ -29,18 +30,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 
-
-
-
-companiesHouse.search('certsimple', function(err, res) {
-    fs.writeFile('message.txt', JSON.stringify(res), (err) => {
-	if (err) throw err;
-	console.log(res);
-    });
-});
-
-
-
+// companiesHouse.search('certsimple', function(err, res) {
+//     fs.writeFile('message.txt', JSON.stringify(res), (err) => {
+// 	if (err) throw err;
+// 	console.log(res);
+//     });
+// });
 
 
 // catch 404 and forward to error handler

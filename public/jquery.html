@@ -102,7 +102,7 @@
 		 source: function( request, response ) {
 		     $.ajax({
 			 beforeSend: function( request ) {
-			     request.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
+			     request.setRequestHeader("Authorization", "Basic " + btoa(insertKeyhere));
 			 },
 			 url: "https://api.companieshouse.gov.uk/search/companies",
 			 dataType: "json",
@@ -146,7 +146,7 @@
 	<script>
 	 var companiesResult = <%- JSON.stringify(companiesResult) %>;
 	 document.getElementbyId("companies").innerHTML = companiesResult;
-	 console.log(companiesResult);
+	 console.log(companiesResult);u
 	</script>
 
 	

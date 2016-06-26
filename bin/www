@@ -17,7 +17,7 @@ var credentials = {key: privateKey, cert: certificate};
 
 var slacktoken = process.env.SLACKAPITOKEN
 
-slack.search.all({slacktoken, www}, (err, data) => {
+slack.search.all({slacktoken, 'www'}, (err, data) => {
     fs.writeFile('slackresponse.json', JSON.stringify(data), (err) => {
 	if (err) throw err;
 	console.log(data);

@@ -25,9 +25,9 @@ var slacktoken = process.env.SLACKAPITOKEN
 // });
 
 https.get('https://slack.com/api/search.all?' + slacktoken + '&query=www&pretty=1', (res) => {
-    console.log('statusCode: ', res.statusCode);
-    console.log('headers: ', res.headers);
-    console.log(res);
+    // console.log('statusCode: ', res.statusCode);
+    // console.log('headers: ', res.headers);
+    // console.log(res);
     res.on('data', function(d) {
     	fs.writeFile('response.json', JSON.stringify(d));
     	console.log(d);

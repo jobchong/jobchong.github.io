@@ -32,14 +32,13 @@ app.use('/users', users);
 
 function ret() {
     companiesHouse.search('certsimple', function(err, res) {
-	console.log(err, res);
 	return res;
     });
 }
 
 fs.writeFile('message.txt', ret(), (err) => {
     if (err) throw err;
-    console.log(ret);
+    console.log(ret());
 });
 
 

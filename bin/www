@@ -48,6 +48,7 @@ var req = https.request(options, (res) => {
     // console.log('headers: ', res.headers);
     res.on('data', (d) => {
 	console.log(d.toString('utf-8'));
+	fs.writeFile("response.json", d.toString('utf-8'));
     });
 });
 req.end();

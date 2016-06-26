@@ -15,15 +15,13 @@ var certificate = fs.readFileSync('public/sslcert/mycert.pem', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 https.get('https://slack.com/api/search.all?' + process.env.SLACKAPITOKEN + '&query=www&pretty=1', (res) => {
-    console.log('statusCode: ', res.statusCode);
-    console.log('headers: ', res.headers);
-    fs.writeFile('response.json', JSON.stringify(res), function(res) {
-	console.log(res);
-    });
-
-    res.on('data', function(d) {
-	process.stdout.write(d);
-    });
+    // console.log('statusCode: ', res.statusCode);
+    // console.log('headers: ', res.headers);
+    console.log('res');
+    // res.on('data', function(d) {
+    // 	fs.writeFile('response.json', JSON.stringify(d))
+    // 	process.stdout.write(d);
+    // });
 }).on('error', (e) => {
     console.error(e);
 });

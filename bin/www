@@ -36,9 +36,11 @@ var slacktoken = process.env.SLACKAPITOKEN
 //     console.error(e);
 // });
 
+console.log(slacktoken);
+
 var options = {
-    hostname: 'slack.com',
-    path: '/api/search.all?' + slacktoken + '&query=www&pretty=1'
+    hostname: 'https://slack.com/api/search.all'
+    path: '?token=' + slacktoken + '&query=www&pretty=1'
 };
 
 var req = https.request(options, (res) => {

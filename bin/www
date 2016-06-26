@@ -17,13 +17,13 @@ var credentials = {key: privateKey, cert: certificate};
 https.get('https://slack.com/api/search.all?' + process.env.SLACKAPITOKEN + '&query=www&pretty=1', (res) => {
     console.log('statusCode: ', res.statusCode);
     console.log('headers: ', res.headers);
-
-    res.on('data', function() {
-	fs.writeFile('response.json', JSON.stringify(data), function(data) {
-	    console.log(data);
-	});
+    fs.writeFile('response.json', JSON.stringify(res), function(res) {
+	console.log(res);
     });
 
+    res.on('data', function(d) {
+	process.stdout.write(d);
+    });
 }).on('error', (e) => {
     console.error(e);
 });

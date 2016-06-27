@@ -48,7 +48,7 @@ https.get(options, (res) => {
     // console.log('headers: ', res.headers);
     res.on('data', (d) => {
 	console.log(d.toString('utf-8'));
-	fs.writeFile("/public/response.json", d.toString('utf-8'), (err) => {
+	fs.writeFile("./public/response.json", d.toString('utf-8'), (err) => {
 	    if (err) throw err;
 	    console.log('It\'s saved!');
 	});

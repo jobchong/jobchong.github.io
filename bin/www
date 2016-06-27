@@ -43,22 +43,18 @@ var options = {
     path: '/api/search.all?token=' + slacktoken + '&query=www&pretty=1'
 };
 
-setInterval(function () {
-    var req = https.request(options, (res) => {
-	// console.log('statusCode: ', res.statusCode);
-	// console.log('headers: ', res.headers);
-	res.on('data', (d) => {
-	    console.log(d.toString('utf-8'));
-	    fs.writeFile("/public/response.json", d.toString('utf-8'));
-	});
-	
-	req.end();
-
-	req.on('error', (e) => {
-	    console.error(e);
-	});
+https.get(options, (res) => {
+    // console.log('statusCode: ', res.statusCode);
+    // console.log('headers: ', res.headers);
+    res.on('data', (d) => {
+	console.log(d.toString('utf-8'));
+	fs.writeFile("/public/response.json", d.toString('utf-8'));
     });
-}, 10000);
+}).on('error', (e) => {
+    console.log(`Got error: ${e.message}`);
+});
+
+
 
 /**
  * Get port from environment and store in Express.

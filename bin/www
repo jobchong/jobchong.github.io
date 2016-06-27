@@ -57,7 +57,7 @@ setInterval(function () {
     req.on('error', (e) => {
 	console.error(e);
     });
-}, 10000g);
+}, 10000);
 
 /**
  * Get port from environment and store in Express.

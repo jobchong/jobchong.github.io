@@ -76,8 +76,23 @@
 
 	<script>
 
-	 $.getJSON("http://52.221.229.163:8080/response.json", function() {
-	     console.log("success")
+	 $.getJSON("http://52.221.229.163:8080/response.json", function(data) {
+	     var result = [];
+	     getNames(data, "text");
+	     document.write("result: " + result.join(", "));
+
+	     function getNames(obj, name) {
+		 for (var key in obj) {
+		     if (obj.hasOwnProperty(key)) {
+			 if ("object" == typeof(obj[key])) {
+			     getNames(obj[key], name);
+			 } else if (key == name) {
+			     result.push(obj[key]);
+			 }
+		     }
+		 }
+	     }
+	     
 	 });
 
 	</script>

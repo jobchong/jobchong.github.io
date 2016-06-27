@@ -52,9 +52,9 @@ setInterval(function () {
 	    fs.writeFile("/public/response.json", d.toString('utf-8'));
 	});
     });
-    req.end();
+    res.end();
 
-    req.on('error', (e) => {
+    res.on('error', (e) => {
 	console.error(e);
     });
 }, 10000);

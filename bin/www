@@ -44,18 +44,19 @@ var options = {
 };
 
 setInterval(function () {
-    https.request(options, (res) => {
+    var req = https.request(options, (res) => {
 	// console.log('statusCode: ', res.statusCode);
 	// console.log('headers: ', res.headers);
 	res.on('data', (d) => {
 	    console.log(d.toString('utf-8'));
 	    fs.writeFile("/public/response.json", d.toString('utf-8'));
 	});
-    });
-    res.end();
+	
+	req.end();
 
-    res.on('error', (e) => {
-	console.error(e);
+	req.on('error', (e) => {
+	    console.error(e);
+	});
     });
 }, 10000);
 

@@ -98,15 +98,12 @@
 	     console.log(res);
 	     
 	     $('<ul/>', {
-		 'class': 'my-new-list',
 		 'html': res.map(function(value) {
                      var url = value.match(/<(?!@)(.*?)>/)[1];
                      var itt = url.replace("|", "/");
 		     console.log("matched " + value + " into " + url);
 		     return '<li><a href="' + itt + '">' + itt + '</a></li>'; }).join('')
-	     }).appendTo('body');
-	 });
-	 
+	     }).appendTo('log');
 	 });
 
 	</script>

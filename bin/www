@@ -36,7 +36,7 @@ var slacktoken = process.env.SLACKAPITOKEN
 //     console.error(e);
 // });
 
-console.log(slacktoken);
+// console.log(slacktoken);
 
 var options = {
     hostname: 'slack.com',
@@ -48,7 +48,7 @@ https.get(options, (res) => {
     // console.log('headers: ', res.headers);
     var body = "";
     res.on('data', (d) => {
-	console.log(d.toString('utf-8'));
+	// console.log(d.toString('utf-8'));
 	body += d;
 	fs.writeFile("./public/response.json", body.toString("utf-8"));
     }).on('error', (e) => {

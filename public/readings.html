@@ -78,8 +78,9 @@
 
 	 $.getJSON("http://52.221.229.163:8080/response.json", function(data) {
 	     var result = [];
-	     getNames(data, "text");
-	     document.write("result: " + result.join(", "));
+	     getNames(data, "title_link");
+	     var insert = document.getElementById("log");
+	     insert = "result: " + result.join(", ");
 
 	     function getNames(obj, name) {
 		 for (var key in obj) {

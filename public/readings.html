@@ -80,7 +80,8 @@
 	     var result = [];
 	     getNames(data, "title_link");
 	     console.log(result);
-	     document.getElementById("log").innerHTML = "result: " + result.join(", ");
+	     var insert = document.getElementById("log");
+	     insert.innerHTML = "result: " + result.join(", ");
 
 	     function getNames(obj, name) {
 		 for (var key in obj) {

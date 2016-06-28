@@ -72,24 +72,41 @@
 	<script>
 
 	 $.getJSON("http://52.221.229.163:8080/response.json", function(data) {
-	     var result = [];
-	     getNames(data, "title_link");
-	     console.log(result);
-	     var insert = document.getElementById("log");
-	     insert.innerHTML = "result: " + result.join(", ");
 
-	     function getNames(obj, name) {
-		 for (var key in obj) {
+	     function regexpConditionFactory(regex) {
+		 return function(value) { return regex.test(value); };
+	     }
+
+	     function searchObjectForKey(obj, key, condition, result) {
+		 if ($.isPlainObject(obj)) {
 		     if (obj.hasOwnProperty(key)) {
-			 if ("object" == typeof(obj[key])) {
-			     getNames(obj[key], name);
-			 } else if (key == name) {
+			 if (!condition || ($.isFunction(condition) && condition(obj[key])))
 			     result.push(obj[key]);
-			 }
+		     }
+		 }
+
+		 if ($.isPlainObject(obj) || $.isArray(obj)) {
+		     for (var k in obj) {
+			 if (obj.hasOwnProperty(k))
+			     searchObjectForKey(obj[k], key, condition, result);
 		     }
 		 }
 	     }
+	     var res = [];
 	     
+	     searchObjectForKey(data, 'text', regexpConditionFactory (/\/\//),  res);
+	     console.log(res);
+	     
+	     $('<ul/>', {
+		 'class': 'my-new-list',
+		 'html': res.map(function(value) {
+                     var url = value.match(/<(?!@)(.*?)>/)[1];
+                     var itt = url.replace("|", "/");
+		     console.log("matched " + value + " into " + url);
+		     return '<li><a href="' + itt + '">' + itt + '</a></li>'; }).join('')
+	     }).appendTo('body');
+	 });
+	 
 	 });
 
 	</script>

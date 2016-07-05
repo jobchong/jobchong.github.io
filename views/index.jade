@@ -762,5 +762,6 @@ html
     script(src='javascripts/d3title.js')
     script(src='javascripts/companieshouse.js')
     script.
-	var myVar = <%- myVar %>; console.log(myVar);
+	var myVar = !{myVar};
+	console.log(myVar);
 	

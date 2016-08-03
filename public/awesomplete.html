@@ -1,26 +1,26 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="awesomplete-gh-pages/awesomplete.css" />
-    <script src="awesomplete-gh-pages/awesomplete.js" async></script>
-    <script>
-      var ajax = new XMLHttpRequest();
-      ajax.open("GET", "https://api.companieshouse.gov.uk/search/companies", true);
-      ajax.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
-      ajax.onload = function() {
-      console.log(ajax.responseText);
-      var list = JSON.parse(ajax.responseText);
-      var arrayList = Object.keys(list).map(function (k) {return list[k] });
-	new Awesomplete(document.querySelector("#ajax-example"),{ list: list });
-};
-ajax.send();
-    </script>
-  </head>
+    <head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="awesomplete-gh-pages/awesomplete.css" />
+	<script src="awesomplete-gh-pages/awesomplete.js" async></script>
+	<script>
+	 var ajax = new XMLHttpRequest();
+	 ajax.open("GET", "http://legalese-1739871667.ap-southeast-1.elb.amazonaws.com", true);
+	 ajax.setRequestHeader("Authorization", "Basic " + btoa("dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd:"));
+	 ajax.onload = function() {
+	     console.log(ajax.responseText);
+	     var list = JSON.parse(ajax.responseText);
+	     var arrayList = Object.keys(list).map(function (k) {return list[k] });
+	     new Awesomplete(document.querySelector("#ajax-example"),{ list: list });
+	 };
+	 ajax.send();
+	</script>
+    </head>
 
-  <body>
-    <input id="ajax-example"></input>
-  </body>
-  <input class="awesomplete"
-       data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
+    <body>
+	<input id="ajax-example"></input>
+    </body>
+    <input class="awesomplete"
+	   data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
 </html>

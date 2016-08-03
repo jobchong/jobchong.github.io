@@ -13,7 +13,8 @@
 	     var list = JSON.parse(ajax.responseText);
 	     for (var i = 0; i < list.UEN_DATAGOV.BODY[0].DATA.length; i++) {
 		 complete.push(i.ENTITY_NAME[0]);
-		 }
+	     }
+	     console.log(complete);
 	 };
 	 ajax.send();
 	</script>

@@ -45,8 +45,8 @@ app.use('/', routes);
 app.use('/users', users);
 
 
-app.get("/uen/:ENTITY_NAME", function(req, res) {
-  db.collection(uen).findOne({ ENTITY_NAME: req.params.id }, function(err, doc) {
+app.get("/uen/:UEN", function(req, res) {
+  db.collection(uen).findOne({ UEN: req.params.id }, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to get contact");
     } else {

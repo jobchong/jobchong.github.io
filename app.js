@@ -4,10 +4,34 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongodb = require('mongodb');
+
+var uen = "uen";
+var db;
 
 // var companiesHouse = require('companies-house')('dhokmSz0Kxz0LOMVRmhAo4x1Fxlcdh0oAGBxnUSd');
 // var fs = require('fs');
 
+mongodb.MongoClient.connect("mongodb://localhost:27017/test", function (err, database) {
+    if (err) {
+	console.log(err);
+	process.exit(1);
+    }
+
+    // Save database object from the callback for reuse.
+    db = database;
+    console.log("Database connection ready");
+});
+
+app.get("/contacts/:ENTITY_NAME", function(req, res) {
+  db.collection(uen).findOne({ ENTITY_NAME: req.params.id }, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to get contact");
+    } else {
+      res.status(200).json(doc);
+    }
+  });
+});
 
 var routes = require('./routes/index');
 var users = require('./routes/users');

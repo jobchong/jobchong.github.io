@@ -23,16 +23,6 @@ mongodb.MongoClient.connect("mongodb://localhost:27017/test", function (err, dat
     console.log("Database connection ready");
 });
 
-app.get("/uen/:ENTITY_NAME", function(req, res) {
-  db.collection(uen).findOne({ ENTITY_NAME: req.params.id }, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to get contact");
-    } else {
-      res.status(200).json(doc);
-    }
-  });
-});
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -53,6 +43,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+
+app.get("/uen/:ENTITY_NAME", function(req, res) {
+  db.collection(uen).findOne({ ENTITY_NAME: req.params.id }, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to get contact");
+    } else {
+      res.status(200).json(doc);
+    }
+  });
+});
+
 
 // companiesHouse.search('certsimple', function(err, res) {
 //     fs.writeFile('message.txt', JSON.stringify(res), (err) => {

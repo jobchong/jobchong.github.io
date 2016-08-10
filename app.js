@@ -55,6 +55,15 @@ app.get("/uen/:UEN", function(req, res) {
   });
 });
 
+app.get("/uen/:id", function(req, res) {
+  db.collection(uen).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to get contact");
+    } else {
+      res.status(200).json(doc);
+    }
+  });
+});
 
 // companiesHouse.search('certsimple', function(err, res) {
 //     fs.writeFile('message.txt', JSON.stringify(res), (err) => {

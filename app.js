@@ -23,7 +23,7 @@ mongodb.MongoClient.connect("mongodb://localhost:27017/test", function (err, dat
     console.log("Database connection ready");
 });
 
-app.get("/contacts/:ENTITY_NAME", function(req, res) {
+app.get("/uen/:ENTITY_NAME", function(req, res) {
   db.collection(uen).findOne({ ENTITY_NAME: req.params.id }, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to get contact");

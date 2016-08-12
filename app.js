@@ -59,7 +59,7 @@ router.get('/', function(req, res) {
 
 router.route("/uen/:id")
     .get(function(req, res) {
-	db.collection(uen).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+	db.collection(uen).findOne({ UEN: req.params.id }, function(err, doc) {
 	    if (err) {
 		handleError(res, err.message, "Failed to get contact");
 	    } else {

@@ -57,7 +57,7 @@ router.get('/', function(req, res) {
 });
 
 
-router.route("/uen/id/:id")
+router.route("/company/uen/:id")
     .get(function(req, res) {
 	db.collection(uen).findOne({ UEN: req.params.id }, function(err, doc) {
 	    if (err) {
@@ -68,7 +68,7 @@ router.route("/uen/id/:id")
 	});
     });
 
-router.route("/uen/:id")
+router.route("/company/:id")
     .get(function(req, res) {
 	var request = req.params.id;
 	var re = new RegExp(request, "i"); 

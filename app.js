@@ -71,7 +71,7 @@ router.route("/company/uen/:id")
 router.route("/company/:id")
     .get(function(req, res) {
 	var request = req.params.id;
-	var re = new RegExp(request, "i"); 
+	var re = new RegExp(request, "i", "g"); 
 	db.collection(uen).findOne({ ENTITY_NAME: {$regex : re}}, function(err, doc) {
 	    if (err) {
 		handleError(res, err.message, "Failed to get contact");

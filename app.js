@@ -57,9 +57,22 @@ router.get('/', function(req, res) {
 });
 
 
-router.route("/uen/:id")
+router.route("/uen/id/:id")
     .get(function(req, res) {
 	db.collection(uen).findOne({ UEN: req.params.id }, function(err, doc) {
+	    if (err) {
+		handleError(res, err.message, "Failed to get contact");
+	    } else {
+		res.status(200).json(doc);
+	    }
+	});
+    });
+
+router.route("/uen/:id")
+    .get(function(req, res) {
+	var request = req.params.id;
+	var re = new RegExp(request, "i"); 
+	db.collection(uen).findOne({ ENTITY_NAME: {$regex : re}}, function(err, doc) {
 	    if (err) {
 		handleError(res, err.message, "Failed to get contact");
 	    } else {

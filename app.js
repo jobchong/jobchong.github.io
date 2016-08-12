@@ -44,26 +44,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 
+var router = express.Router();              // get an instance of the express Router
 
-app.get("/uen/:UEN", function(req, res) {
-  db.collection(uen).findOne({ UEN: req.params.id }, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to get contact");
-    } else {
-      res.status(200).json(doc);
-    }
-  });
+router.use(function(req, res, next) {
+    // do logging
+    console.log('Something is happening.');
+    next(); // make sure we go to the next routes and don't stop here
 });
 
-app.get("/uen/:id", function(req, res) {
-  db.collection(uen).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to get contact");
-    } else {
-      res.status(200).json(doc);
-    }
-  });
-});
+router.route("/uen/:id")
+    .get(function(req, res) {
+	db.collection(uen).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+	    if (err) {
+		handleError(res, err.message, "Failed to get contact");
+	    } else {
+		res.status(200).json(doc);
+	    }
+	});
+    });
+
+
+app.use('/api', router);
+
 
 // companiesHouse.search('certsimple', function(err, res) {
 //     fs.writeFile('message.txt', JSON.stringify(res), (err) => {

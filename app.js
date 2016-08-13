@@ -68,16 +68,13 @@ router.route("/company/uen/:id")
 	});
     });
 
+
 router.route("/company/:id")
     .get(function(req, res) {
 	var request = req.params.id;
-	var re = new RegExp(request, "i", "g"); 
-	db.collection(uen).findOne({ ENTITY_NAME: {$regex : re}}, function(err, doc) {
-	    if (err) {
-		handleError(res, err.message, "Failed to get contact");
-	    } else {
-		res.status(200).json(doc);
-	    }
+	var re = new RegExp(request, "i", "g");
+	var cursor = db.collection(uen).find( {ENTITY_NAME: {$regex : re}} ).toArray(function (err, doc) {
+	    res.status(200).json(doc);
 	});
     });
 

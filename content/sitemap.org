@@ -1,0 +1,4 @@
+#+TITLE: Index
+
+- [[file:index.org][/dev/null]]
+- [[file:welcome.org][Getting started with this site]]

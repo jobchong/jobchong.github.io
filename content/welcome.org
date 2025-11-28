@@ -1,0 +1,10 @@
+#+title: Getting started with this site
+#+options: toc:nil num:nil
+
+Publishing flow:
+
+1. Add or edit Org files under =content/= (use subfolders as you like).
+2. Run =emacs -Q --batch -l org -l ox-publish -l publish.el -f org-publish-all= from the repo root.
+3. Inspect the generated HTML in =public/= and commit if you want to track it locally.
+
+If you prefer to keep the main branch clean, let the GitHub Actions workflow deploy =public/= to the =gh-pages= branch for you.

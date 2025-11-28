@@ -1,0 +1,15 @@
+#+title: /dev/null
+#+subtitle: Job Chong
+#+options: toc:nil num:nil
+
+Thanks for stopping by. I publish with org-mode.
+
+* About me
+I'm Job, currently leading teams shipping software and platform tooling.
+- @@html:<a href="https://github.com/jobchong" target="_blank" rel="noopener">GitHub</a>@@
+- @@html:<a href="https://linkedin.com/in/jobchong/" target="_blank" rel="noopener">LinkedIn</a>@@
+- @@html:<a href="assets/job_chong.pdf" target="_blank" rel="noopener">Resume (PDF)</a>@@
+
+* Recent writing
+** Getting started with this site (2025-11-28)
+#+include: "welcome.org" :lines "4-"

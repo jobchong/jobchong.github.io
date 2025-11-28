@@ -1,6 +1,20 @@
 #+title: /dev/null
 #+subtitle: Job Chong
 #+options: toc:nil num:nil
+#+HTML_HEAD_EXTRA: <meta name="description" content="Job Chong is a software engineer based in Singapore, working on frontend, TypeScript, and AI tools." />
+#+HTML_HEAD_EXTRA: <script type="application/ld+json">
+#+HTML_HEAD_EXTRA: {
+#+HTML_HEAD_EXTRA:   "@context": "https://schema.org",
+#+HTML_HEAD_EXTRA:   "@type": "Person",
+#+HTML_HEAD_EXTRA:   "name": "Job Chong",
+#+HTML_HEAD_EXTRA:   "url": "https://jobchong.org/",
+#+HTML_HEAD_EXTRA:   "jobTitle": "Software Engineer",
+#+HTML_HEAD_EXTRA:   "sameAs": [
+#+HTML_HEAD_EXTRA:     "https://github.com/jobchong",
+#+HTML_HEAD_EXTRA:     "https://www.linkedin.com/in/jobchong/"
+#+HTML_HEAD_EXTRA:   ]
+#+HTML_HEAD_EXTRA: }
+#+HTML_HEAD_EXTRA: </script>
 
 Thanks for stopping by. I publish with org-mode.
 

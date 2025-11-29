@@ -25,5 +25,7 @@ I'm Job, currently leading teams shipping software and platform tooling.
 - @@html:<a href="assets/job_chong.pdf" target="_blank" rel="noopener">Resume (PDF)</a>@@
 
 * Recent writing
+** I have CI issues?
+#+include: "dns_hiccups.org" :lines "4-"
 ** Getting started with this site (2025-11-28)
 #+include: "welcome.org" :lines "4-"

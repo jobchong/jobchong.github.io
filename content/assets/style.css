@@ -44,7 +44,8 @@ a:hover {
 }
 
 #content {
-  max-width: 1200px;
+  width: min(92vw, 82ch);
+  max-width: 82ch;
   margin: 0 auto;
   padding: 0 6px;
 }
@@ -100,14 +101,14 @@ h6::before {
   margin-left: 0;
 }
 
-p { margin: 0; color: var(--fg); }
+p { margin: 0 0 0.85em; color: var(--fg); }
 #content > p {
   padding-left: calc(var(--h1-indent) + var(--h-text-gap));
 }
 ul, ol {
   padding-left: 1.6em;
   color: var(--fg);
-  margin: 0 0 0 0.2em;
+  margin: 0 0 0.85em 0.2em;
   list-style-position: outside;
 }
 li { margin: 0; }
@@ -164,7 +165,8 @@ pre {
 }
 
 #org-directives-block {
-  max-width: 1200px;
+  width: min(92vw, 82ch);
+  max-width: 82ch;
   margin: 0 auto 10px;
   padding: 0 6px;
   display: flex;

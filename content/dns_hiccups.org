@@ -1,0 +1,8 @@
+#+title: I have CI issues?
+#+options: toc:nil num:nil
+
+I've somehow managed to create a CI issue in a Pages repo, where ~publish.el~ doesn't copy over the ~CNAME~ to ~./public~. So every time I push changes I nuke the ~CNAME~ in ~gh-pages~, which uses the ~./public~ folder. Wonderful.
+
+Surprisingly Codex didn't catch this issue. Perhaps I didn't describe the Actions stuff clearly enough? In the future I should go through build details with Codex as well when coming up with an implementation plan.
+
+Also GitHub should really only allow you to set the custom domain from the ~CNAME~ itself, and remove that field in your Page settings.

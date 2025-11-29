@@ -3,7 +3,9 @@
 (let* ((root (file-name-directory (or load-file-name buffer-file-name)))
        (org-root (expand-file-name "content" root))
        (site-root (expand-file-name "public" root))
-       (timestamp-dir (expand-file-name ".org-timestamps/" root)))
+       (timestamp-dir (expand-file-name ".org-timestamps/" root))
+       (style-path (expand-file-name "content/assets/style.css" root))
+       (style-version (substring (secure-hash 'sha1 style-path) 0 8)))
   (make-directory timestamp-dir t)
   (setq org-publish-timestamp-directory timestamp-dir)
 
@@ -27,7 +29,7 @@
            :time-stamp-file nil
            :auto-sitemap t
            :sitemap-title "Index"
-           :html-head "<link rel=\"icon\" type=\"image/svg+xml\" href=\"assets/favicon.svg\" />\n<link rel=\"stylesheet\" href=\"assets/style.css\" /><script src=\"assets/fold.js\" defer></script>")
+           :html-head ,(format "<link rel=\"icon\" type=\"image/svg+xml\" href=\"assets/favicon.svg\" />\n<link rel=\"stylesheet\" href=\"assets/style.css?v=%s\" /><script src=\"assets/fold.js\" defer></script>" style-version))
           ("org-static"
            :base-directory ,org-root
            :base-extension "css\\|js\\|png\\|jpg\\|gif\\|svg\\|pdf\\|ico"

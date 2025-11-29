@@ -1,0 +1,22 @@
+#+title: jobchong.github.io
+#+subtitle: Org → GitHub Pages
+#+options: toc:nil num:nil html-postamble:nil
+
+This repo holds the org sources for my GitHub Pages site. The homepage lives in =content/index.org= and the published output is generated into =public/=.
+
+* Publishing flow
+
+- Edit any Org file under =content/= (use subfolders as you like).
+- Run =emacs -Q --batch -l org -l ox-publish -l publish.el -f org-publish-all= from the repo root.
+- Inspect the generated HTML in =public/= and push it to the =gh-pages= branch (manually or via CI).
+
+* Layout
+
+- =content/= — Org sources for the site (homepage is =index.org=, posts live under =posts/=).
+- =content/assets/= — shared styles and other static assets.
+- =publish.el= — org-publish configuration.
+
+* Links
+
+- [[file:content/index.org][Homepage source]]
+- [[file:content/welcome.org][Getting started with this site]]

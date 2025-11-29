@@ -34,4 +34,10 @@
            :publishing-directory ,site-root
            :recursive t
            :publishing-function org-publish-attachment)
-          ("site" :components ("org-site" "org-static")))))
+          ("cname"
+           :base-directory ,root
+           :include ("CNAME")
+           :publishing-directory ,site-root
+           :recursive nil
+           :publishing-function org-publish-attachment)
+          ("site" :components ("org-site" "org-static" "cname")))))

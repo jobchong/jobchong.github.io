@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Index</title>
+<title>I have CI issues?</title>
 <meta name="generator" content="Org Mode" />
 <style>
   #content { max-width: 60em; margin: auto; }
@@ -196,20 +196,26 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<div id="org-directives-block"><pre id="org-directives">#+title: Index
+<div id="org-directives-block"><pre id="org-directives">#+title: I have CI issues?
 #+subtitle: 
 #+options: toc:nil num:nil</pre></div>
 </div>
 <div id="content" class="content">
-<h1 class="title">Index</h1>
-<ul class="org-ul">
-<li><a href="index.html">/dev/null</a></li>
-<li><a href="welcome.html">Getting started with this site</a></li>
-<li><a href="dns_hiccups.html">I have CI issues?</a></li>
-</ul>
+<h1 class="title">I have CI issues?</h1>
+<p>
+I've somehow managed to create a CI issue in a Pages repo, where <code>publish.el</code> doesn't copy over the <code>CNAME</code> to <code>./public</code>. So every time I push changes I nuke the <code>CNAME</code> in <code>gh-pages</code>, which uses the <code>./public</code> folder. Wonderful.
+</p>
+
+<p>
+Surprisingly Codex didn't catch this issue. Perhaps I didn't describe the Actions stuff clearly enough? In the future I should go through build details with Codex as well when coming up with an implementation plan.
+</p>
+
+<p>
+Also GitHub should really only allow you to set the custom domain from the <code>CNAME</code> itself, and remove that field in your Page settings.
+</p>
 </div>
 <div id="postamble" class="status">
-<div id="org-modeline">U:----  Index   All   (1,0)     (Org ind counsel SP company FlyC- ivy)</div>
+<div id="org-modeline">U:----  I have CI issues?   All   (1,0)     (Org ind counsel SP company FlyC- ivy)</div>
 </div>
 </body>
 </html>

@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>/dev/null</title>
+<title>Flying with Claude Code and Codex and Harp</title>
 <meta name="generator" content="Org Mode" />
 <style>
   #content { max-width: 60em; margin: auto; }
@@ -193,57 +193,15 @@
 </style>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 <link rel="stylesheet" href="assets/style.css?v=5c04a397" /><script src="assets/fold.js" defer></script>
-<meta name="description" content="Job Chong is a software engineer based in Singapore, working on frontend, TypeScript, and AI tools." />
-<script type="application/ld+json">
-{
-"@context": "https://schema.org",
-"@type": "Person",
-"name": "Job Chong",
-"url": "https://jobchong.org/",
-"jobTitle": "Software Engineer",
-"sameAs": [
-"https://github.com/jobchong",
-"https://www.linkedin.com/in/jobchong/"
-]
-}
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<div id="org-directives-block"><pre id="org-directives">#+title: /dev/null
-#+subtitle: Job Chong
+<div id="org-directives-block"><pre id="org-directives">#+title: Flying with Claude Code and Codex and Harp
+#+subtitle: 
 #+options: toc:nil num:nil</pre></div>
 </div>
 <div id="content" class="content">
-<h1 class="title">/dev/null
-<br />
-<span class="subtitle">Job Chong</span>
-</h1>
-<p>
-Thanks for stopping by. I publish with org-mode.
-</p>
-
-<div id="outline-container-orgc901135" class="outline-2">
-<h2 id="orgc901135">About me</h2>
-<div class="outline-text-2" id="text-orgc901135">
-<p>
-I'm Job, currently leading teams shipping software and platform tooling.
-</p>
-<ul class="org-ul">
-<li><a href="https://github.com/jobchong" target="_blank" rel="noopener">GitHub</a></li>
-<li><a href="https://linkedin.com/in/jobchong/" target="_blank" rel="noopener">LinkedIn</a></li>
-<li><a href="assets/job_chong.pdf" target="_blank" rel="noopener">Resume (PDF)</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org2a541ed" class="outline-2">
-<h2 id="org2a541ed">Recent writing</h2>
-<div class="outline-text-2" id="text-org2a541ed">
-</div>
-<div id="outline-container-orgdb1d1c1" class="outline-3">
-<h3 id="orgdb1d1c1">Flying with Claude Code and Codex (2026-01-05)</h3>
-<div class="outline-text-3" id="text-orgdb1d1c1">
+<h1 class="title">Flying with Claude Code and Codex and Harp</h1>
 <p>
 As noted in many places Claude Code and Codex are now harnesses of exceeding quality. Personally I can't bear to use IDEs and plugins and whatnot, so it's been a great pleasure to have an LLM interact with my code in the same tools I use. Perhaps that's the main developer experience value-add for these model harnesses.
 </p>
@@ -265,45 +223,8 @@ Some things I've noticed about both Claude/Codex while observing their output:
 Org-mode complaint: I do wish there were some elegant org-native way to specify links to open in a new tab. Alas, we only have the <code>#+HTML_HEAD</code> global directive, and so most links on here are inline HTML.
 </p>
 </div>
-</div>
-<div id="outline-container-orgc7279e1" class="outline-3">
-<h3 id="orgc7279e1">I have CI issues? (2025-11-29)</h3>
-<div class="outline-text-3" id="text-orgc7279e1">
-<p>
-I've somehow managed to create a CI issue in a Pages repo, where <code>publish.el</code> doesn't copy over the <code>CNAME</code> to <code>./public</code>. So every time I push changes I nuke the <code>CNAME</code> in <code>gh-pages</code>, which uses the <code>./public</code> folder. Wonderful.
-</p>
-
-<p>
-Surprisingly Codex didn't catch this issue. Perhaps I didn't describe the Actions stuff clearly enough? In the future I should go through build details with Codex as well when coming up with an implementation plan.
-</p>
-
-<p>
-Also GitHub should really only allow you to set the custom domain from the <code>CNAME</code> itself, and remove that field in your Page settings.
-</p>
-</div>
-</div>
-<div id="outline-container-org139be3e" class="outline-3">
-<h3 id="org139be3e">Getting started with this site (2025-11-28)</h3>
-<div class="outline-text-3" id="text-org139be3e">
-<p>
-Publishing flow:
-</p>
-
-<ol class="org-ol">
-<li>Add or edit Org files under <code>content/</code> (use subfolders as you like).</li>
-<li>Run <code>emacs -Q --batch -l org -l ox-publish -l publish.el -f org-publish-all</code> from the repo root.</li>
-<li>Inspect the generated HTML in <code>public/</code> and commit if you want to track it locally.</li>
-</ol>
-
-<p>
-If you prefer to keep the main branch clean, let the GitHub Actions workflow deploy <code>public/</code> to the <code>gh-pages</code> branch for you.
-</p>
-</div>
-</div>
-</div>
-</div>
 <div id="postamble" class="status">
-<div id="org-modeline">U:----  /dev/null   All   (1,0)     (Org ind counsel SP company FlyC- ivy)</div>
+<div id="org-modeline">U:----  Flying with Claude Code and Codex and Harp   All   (1,0)     (Org ind counsel SP company FlyC- ivy)</div>
 </div>
 </body>
 </html>

@@ -1,0 +1,13 @@
+#+title: Flying with Claude Code and Codex and Harp
+#+options: toc:nil num:nil
+
+As noted in many places Claude Code and Codex are now harnesses of exceeding quality. Personally I can't bear to use IDEs and plugins and whatnot, so it's been a great pleasure to have an LLM interact with my code in the same tools I use. Perhaps that's the main developer experience value-add for these model harnesses.
+
+I'm (or more accurately, Claude/Codex) are working on @@html:<a href="https://github.com/jobchong/harp" target="_blank" rel="noopener">harp</a>@@, which is the start of the equivalent in Emacs. Perhaps my IDE snootiness is hypocrisy given that I'm working on this, but oh well.
+
+Some things I've noticed about both Claude/Codex while observing their output:
+  - They're incredibly bad at matching parentheses in Lisp. Like five minutes to find a missing/extraneous parenthesis bad. I find this extremely funny, and it reminds me of the r's in strawberry stuff. I'm watching codex run ~perl -ne~ multiple times trying to match them.
+  - Codex is so good at creating a harness for itself I suspect it's been specifically trained to do it.
+  - ~/review~ in Codex is great for spotting security issues and edge/corner cases with malformed user input.
+
+Org-mode complaint: I do wish there were some elegant org-native way to specify links to open in a new tab. Alas, we only have the ~#+HTML_HEAD~ global directive, and so most links on here are inline HTML.

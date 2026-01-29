@@ -198,6 +198,15 @@ pre {
   box-shadow: 0 -1px 0 #babdb6;
 }
 
+/* Hide section content by default to prevent flash before JS loads */
+.outline-2 > :not(h2):not(.org-section-body),
+.outline-3 > :not(h3):not(.org-section-body),
+.outline-4 > :not(h4):not(.org-section-body),
+.outline-5 > :not(h5):not(.org-section-body),
+.outline-6 > :not(h6):not(.org-section-body) {
+  display: none;
+}
+
 .org-collapsible {
   cursor: pointer;
   display: block;

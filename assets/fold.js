@@ -18,6 +18,10 @@
     });
   };
 
+  // Find the first h3 post (latest post) and its parent "Recent writing" section
+  const latestPost = headings.find((h) => h.tagName === 'H3');
+  const recentWriting = latestPost?.closest('.outline-2')?.querySelector('h2');
+
   headings.forEach((heading) => {
     const container = heading.parentElement;
     const hasBody = Array.from(container.children).some((child) => child !== heading);
@@ -38,7 +42,8 @@
       }
     });
 
-    // Start collapsed to mimic org-mode folding; users can expand with click or keyboard.
-    toggleSection(heading, true);
+    // Start collapsed, except for "Recent writing" and the latest post.
+    const shouldExpand = heading === latestPost || heading === recentWriting;
+    toggleSection(heading, !shouldExpand);
   });
 })();

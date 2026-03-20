@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>/dev/null</title>
+<title>Code contribution</title>
 <meta name="generator" content="Org Mode" />
 <style>
   #content { max-width: 60em; margin: auto; }
@@ -193,57 +193,15 @@
 </style>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 <link rel="stylesheet" href="assets/style.css?v=5c04a397" /><script src="assets/fold.js" defer></script>
-<meta name="description" content="Job Chong is a software engineer based in Singapore, working on frontend, TypeScript, and AI tools." />
-<script type="application/ld+json">
-{
-"@context": "https://schema.org",
-"@type": "Person",
-"name": "Job Chong",
-"url": "https://jobchong.org/",
-"jobTitle": "Software Engineer",
-"sameAs": [
-"https://github.com/jobchong",
-"https://www.linkedin.com/in/jobchong/"
-]
-}
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<div id="org-directives-block"><pre id="org-directives">#+title: /dev/null
-#+subtitle: Job Chong
+<div id="org-directives-block"><pre id="org-directives">#+title: Code contribution
+#+subtitle: 
 #+options: toc:nil num:nil</pre></div>
 </div>
 <div id="content" class="content">
-<h1 class="title">/dev/null
-<br />
-<span class="subtitle">Job Chong</span>
-</h1>
-<p>
-Thanks for stopping by. I publish with org-mode.
-</p>
-
-<div id="outline-container-org6b053a6" class="outline-2">
-<h2 id="org6b053a6">About me</h2>
-<div class="outline-text-2" id="text-org6b053a6">
-<p>
-I'm Job, currently leading teams shipping software and platform tooling.
-</p>
-<ul class="org-ul">
-<li><a href="https://github.com/jobchong" target="_blank" rel="noopener">GitHub</a></li>
-<li><a href="https://linkedin.com/in/jobchong/" target="_blank" rel="noopener">LinkedIn</a></li>
-<li><a href="assets/job_chong.pdf" target="_blank" rel="noopener">Resume (PDF)</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgf92b2db" class="outline-2">
-<h2 id="orgf92b2db">Recent writing</h2>
-<div class="outline-text-2" id="text-orgf92b2db">
-</div>
-<div id="outline-container-org1b3320b" class="outline-3">
-<h3 id="org1b3320b">Code contributions (2026-03-20)</h3>
-<div class="outline-text-3" id="text-org1b3320b">
+<h1 class="title">Code contribution</h1>
 <p>
 Models are now really good at producing standard frontend enterprise code, to the point where I can skim PRs they create and approve them. They have some tics I don't like (e.g. excessive modularisation), and as I was considering prompting this behaviour out I thought to myself: what are actual useful metrics for code review today?
 </p>
@@ -268,70 +226,8 @@ Perhaps now the good way to think about frontend work is to really commit to the
 You can repeat this loop <i>ad infinitum</i> if you have good agent control and an unlimited budget. I find the model-directed verification of its code's output (visual, JSON, whatever) that is <b>not test-driven</b> cleans up a lot of the last 90% of work that we usually have to do.
 </p>
 </div>
-</div>
-<div id="outline-container-orgb15a767" class="outline-3">
-<h3 id="orgb15a767">Flying with Claude Code and Codex (2026-01-05)</h3>
-<div class="outline-text-3" id="text-orgb15a767">
-<p>
-As noted in many places Claude Code and Codex are now harnesses of exceeding quality. Personally I can't bear to use IDEs and plugins and whatnot, so it's been a great pleasure to have an LLM interact with my code in the same tools I use. Perhaps that's the main developer experience value-add for these model harnesses.
-</p>
-
-<p>
-I'm (or more accurately, Claude/Codex) are working on <a href="https://github.com/jobchong/harp" target="_blank" rel="noopener">harp</a>, which is the start of the equivalent in Emacs. Perhaps my IDE snootiness is hypocrisy given that I'm working on this, but oh well.
-</p>
-
-<p>
-Some things I've noticed about both Claude/Codex while observing their output:
-</p>
-<ul class="org-ul">
-<li>They're incredibly bad at matching parentheses in Lisp. Like five minutes to find a missing/extraneous parenthesis bad. I find this extremely funny, and it reminds me of the r's in strawberry stuff. I'm watching codex run <code>perl -ne</code> multiple times trying to match them.</li>
-<li>Codex is so good at creating a harness for itself I suspect it's been specifically trained to do it.</li>
-<li><code>/review</code> in Codex is great for spotting security issues and edge/corner cases with malformed user input.</li>
-</ul>
-
-<p>
-Org-mode complaint: I do wish there were some elegant org-native way to specify links to open in a new tab. Alas, we only have the <code>#+HTML_HEAD</code> global directive, and so most links on here are inline HTML.
-</p>
-</div>
-</div>
-<div id="outline-container-org83b1b36" class="outline-3">
-<h3 id="org83b1b36">I have CI issues? (2025-11-29)</h3>
-<div class="outline-text-3" id="text-org83b1b36">
-<p>
-I've somehow managed to create a CI issue in a Pages repo, where <code>publish.el</code> doesn't copy over the <code>CNAME</code> to <code>./public</code>. So every time I push changes I nuke the <code>CNAME</code> in <code>gh-pages</code>, which uses the <code>./public</code> folder. Wonderful.
-</p>
-
-<p>
-Surprisingly Codex didn't catch this issue. Perhaps I didn't describe the Actions stuff clearly enough? In the future I should go through build details with Codex as well when coming up with an implementation plan.
-</p>
-
-<p>
-Also GitHub should really only allow you to set the custom domain from the <code>CNAME</code> itself, and remove that field in your Page settings.
-</p>
-</div>
-</div>
-<div id="outline-container-org4f426e5" class="outline-3">
-<h3 id="org4f426e5">Getting started with this site (2025-11-28)</h3>
-<div class="outline-text-3" id="text-org4f426e5">
-<p>
-Publishing flow:
-</p>
-
-<ol class="org-ol">
-<li>Add or edit Org files under <code>content/</code> (use subfolders as you like).</li>
-<li>Run <code>emacs -Q --batch -l org -l ox-publish -l publish.el -f org-publish-all</code> from the repo root.</li>
-<li>Inspect the generated HTML in <code>public/</code> and commit if you want to track it locally.</li>
-</ol>
-
-<p>
-If you prefer to keep the main branch clean, let the GitHub Actions workflow deploy <code>public/</code> to the <code>gh-pages</code> branch for you.
-</p>
-</div>
-</div>
-</div>
-</div>
 <div id="postamble" class="status">
-<div id="org-modeline">U:----  /dev/null   All   (1,0)     (Org ind counsel SP company FlyC- ivy)</div>
+<div id="org-modeline">U:----  Code contribution   All   (1,0)     (Org ind counsel SP company FlyC- ivy)</div>
 </div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 #+TITLE: Index
 
 - [[file:index.org][/dev/null]]
+- [[file:prs.org][Code contribution]]
 - [[file:harnesses.org][Flying with Claude Code and Codex and Harp]]
 - [[file:welcome.org][Getting started with this site]]
 - [[file:dns_hiccups.org][I have CI issues?]]

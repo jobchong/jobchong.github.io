@@ -1,0 +1,16 @@
+#+title: Code contribution
+#+options: toc:nil num:nil
+
+Models are now really good at producing standard frontend enterprise code, to the point where I can skim PRs they create and approve them. They have some tics I don't like (e.g. excessive modularisation), and as I was considering prompting this behaviour out I thought to myself: what are actual useful metrics for code review today?
+
+IMO the only really useful metrics for UI/UX have never been code-related. I've tried to focus on standard web vitals, memory usage, etc. aside from the usual usability concerns. When we used to have to write React cruft by hand "code quality" counted for a lot for an engineer's mental model of the app, but now with models churning correct and ugly code out? I'm not sure previous models of clean code apply.
+
+Perhaps now the good way to think about frontend work is to really commit to the bit with model generation. I've found a lot of success with a loop that includes the following:
+
+1. Get an architecture diagram and implementation plan going. I get them to create tasks that they estimate will fit within half a context window. Not sure if I'm superstitious or plain behind, but if it ain't broken...
+2. Either do TDD or compulsory coverage levels after writing code. This includes integration tests.
+3. Get your models to write a demo doc detailing how'd they show their changes. For UI work this would be a visual demo. For backend stuff, perhaps a series of curls, a script for infra.
+4. /Let them do the demo/. They can use their browser tool, Chrome devtool MCP, bring up the service container and run scripts, whatever. Tell them to note any discrepancies from the script and implementation plan and fix them.
+5. After all this works they can check that they haven't degraded metrics. I'm still figuring out how best to automate this bit without the model writing debug scripts to get into the browser console.
+
+You can repeat this loop /ad infinitum/ if you have good agent control and an unlimited budget. I find the model-directed verification of its code's output (visual, JSON, whatever) that is *not test-driven* cleans up a lot of the last 90% of work that we usually have to do.

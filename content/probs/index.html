@@ -551,7 +551,7 @@
         <div class="wrap">
             <header>
                 <h1>Who's out there in Singapore? 🇸🇬</h1>
-                <p>Back-of-envelope estimate from SingStat.</p>
+                <p>Back-of-envelope estimate from SingStat, with a few Census-backed correlations.</p>
                 <a class="secondary site-link" href="/" rel="home">jobchong.org</a>
             </header>
 
@@ -603,12 +603,39 @@
         <script>
          const ADULT_POP = 3_600_000;
 
+         // Census 2020, residents aged 15+; used as joint distributions where available.
+         const CENSUS_TOTAL = 3_459_093;
+         const ETHNIC_RELIGION_COUNTS = {
+             chinese: {
+                 total: 2_606_881, none: 669_097, buddhist: 1_052_114, taoist: 303_095,
+                 muslim: 11_953, hindu: 458, christian: 562_861, other: 7_303,
+             },
+             malay: {
+                 total: 447_747, none: 1_640, buddhist: 447, taoist: 133,
+                 muslim: 442_368, hindu: 223, christian: 2_743, other: 193,
+             },
+             indian: {
+                 total: 299_056, none: 6_443, buddhist: 2_031, taoist: 63,
+                 muslim: 69_964, hindu: 171_326, christian: 37_605, other: 11_623,
+             },
+             other: {
+                 total: 105_410, none: 15_347, buddhist: 19_566, taoist: 669,
+                 muslim: 14_966, hindu: 956, christian: 51_146, other: 2_760,
+             },
+         };
+         const AGE_DEMO_COUNTS = [{"range":[20,24],"chinese":{"total":[86588,81796],"single":[85766,79815],"married":[790,1754],"widowed":[0,0],"divorced":[31,227]},"malay":{"total":[22660,20903],"single":[21631,18993],"married":[978,1771],"widowed":[0,0],"divorced":[51,139]},"indian":{"total":[10657,11083],"single":[10507,10317],"married":[151,728],"widowed":[0,0],"divorced":[0,37]},"other":{"total":[3752,3343],"single":[3698,3154],"married":[54,173],"widowed":[0,0],"divorced":[0,16]}},{"range":[25,29],"chinese":{"total":[103610,104335],"single":[87566,78161],"married":[15643,25250],"widowed":[12,13],"divorced":[389,911]},"malay":{"total":[24933,25069],"single":[17580,12952],"married":[7093,11480],"widowed":[0,13],"divorced":[260,624]},"indian":{"total":[11270,12223],"single":[8995,7276],"married":[2220,4719],"widowed":[0,19],"divorced":[56,209]},"other":{"total":[2214,3449],"single":[1811,1752],"married":[388,1680],"widowed":[0,0],"divorced":[15,16]}},{"range":[30,34],"chinese":{"total":[105216,116454],"single":[47861,43232],"married":[55877,70807],"widowed":[61,47],"divorced":[1416,2367]},"malay":{"total":[22000,22296],"single":[6820,4570],"married":[14710,16464],"widowed":[0,30],"divorced":[470,1232]},"indian":{"total":[11456,12326],"single":[3639,2948],"married":[7537,8995],"widowed":[0,19],"divorced":[280,363]},"other":{"total":[2825,5926],"single":[995,763],"married":[1817,4884],"widowed":[0,24],"divorced":[13,255]}},{"range":[35,39],"chinese":{"total":[103015,114602],"single":[25817,25950],"married":[73808,83497],"widowed":[78,273],"divorced":[3312,4882]},"malay":{"total":[18947,19691],"single":[3299,2642],"married":[14732,15340],"widowed":[26,74],"divorced":[889,1636]},"indian":{"total":[13520,16567],"single":[1813,1471],"married":[11282,14211],"widowed":[43,112],"divorced":[381,772]},"other":{"total":[4001,8279],"single":[553,729],"married":[3349,6982],"widowed":[0,114],"divorced":[99,455]}},{"range":[40,44],"chinese":{"total":[102120,118718],"single":[19179,23024],"married":[78612,87643],"widowed":[165,673],"divorced":[4164,7378]},"malay":{"total":[13665,15350],"single":[2385,1531],"married":[10390,11960],"widowed":[16,236],"divorced":[874,1624]},"indian":{"total":[17451,16878],"single":[1216,1006],"married":[15531,14812],"widowed":[28,108],"divorced":[676,952]},"other":{"total":[5969,8454],"single":[488,610],"married":[5362,7441],"widowed":[9,49],"divorced":[110,354]}},{"range":[45,49],"chinese":{"total":[110175,121797],"single":[17768,21613],"married":[86636,89057],"widowed":[262,1589],"divorced":[5509,9537]},"malay":{"total":[14935,17227],"single":[1913,1478],"married":[11861,13372],"widowed":[97,492],"divorced":[1065,1884]},"indian":{"total":[18653,13708],"single":[1025,926],"married":[16668,11570],"widowed":[74,254],"divorced":[886,958]},"other":{"total":[7171,8063],"single":[516,591],"married":[6363,6829],"widowed":[19,153],"divorced":[273,490]}},{"range":[50,54],"chinese":{"total":[105588,113022],"single":[14788,17525],"married":[84228,83628],"widowed":[568,2271],"divorced":[6004,9598]},"malay":{"total":[16909,20208],"single":[1975,1201],"married":[13377,15756],"widowed":[259,996],"divorced":[1298,2255]},"indian":{"total":[15245,11783],"single":[1182,1129],"married":[13243,9003],"widowed":[92,454],"divorced":[728,1198]},"other":{"total":[5763,5828],"single":[443,459],"married":[5117,4709],"widowed":[0,147],"divorced":[202,513]}},{"range":[55,59],"chinese":{"total":[111755,118782],"single":[15074,17381],"married":[89209,86628],"widowed":[1372,5232],"divorced":[6099,9541]},"malay":{"total":[20041,22522],"single":[1759,1554],"married":[16734,16141],"widowed":[357,2164],"divorced":[1191,2663]},"indian":{"total":[13302,11720],"single":[1051,1126],"married":[11429,8398],"widowed":[134,967],"divorced":[688,1230]},"other":{"total":[4641,3591],"single":[374,323],"married":[4011,2827],"widowed":[65,97],"divorced":[192,345]}},{"range":[60,64],"chinese":{"total":[109426,115942],"single":[12494,16024],"married":[89031,82050],"widowed":[2187,8541],"divorced":[5715,9327]},"malay":{"total":[16830,18296],"single":[1008,1138],"married":[14301,12717],"widowed":[640,2496],"divorced":[881,1944]},"indian":{"total":[9964,10393],"single":[548,811],"married":[8432,7025],"widowed":[340,1413],"divorced":[645,1144]},"other":{"total":[2709,2461],"single":[220,175],"married":[2305,1822],"widowed":[9,209],"divorced":[176,254]}},{"range":[65,69],"chinese":{"total":[91643,95248],"single":[8014,11750],"married":[76480,64300],"widowed":[3298,12821],"divorced":[3851,6378]},"malay":{"total":[11417,12744],"single":[633,760],"married":[9707,7603],"widowed":[835,3261],"divorced":[242,1119]},"indian":{"total":[7360,7597],"single":[405,646],"married":[6309,4514],"widowed":[336,1912],"divorced":[310,525]},"other":{"total":[1984,1387],"single":[198,87],"married":[1645,947],"widowed":[25,179],"divorced":[115,174]}},{"range":[70,74],"chinese":{"total":[69304,75617],"single":[4798,7177],"married":[57738,45468],"widowed":[4166,18760],"divorced":[2602,4213]},"malay":{"total":[6925,9138],"single":[224,414],"married":[5755,4287],"widowed":[762,3781],"divorced":[183,656]},"indian":{"total":[5177,5221],"single":[239,255],"married":[4315,2376],"widowed":[320,1565],"divorced":[110,69]},"other":{"total":[1303,917],"single":[52,114],"married":[1082,511],"widowed":[80,193],"divorced":[88,99]}},{"range":[75,79],"chinese":{"total":[35479,44247],"single":[1375,2762],"married":[29523,20582],"widowed":[3594,18882],"divorced":[987,2020]},"malay":{"total":[3043,4348],"single":[123,69],"married":[2333,1305],"widowed":[550,2735],"divorced":[37,239]},"indian":{"total":[1937,2559],"single":[79,82],"married":[1427,842],"widowed":[320,1565],"divorced":[110,69]},"other":{"total":[510,438],"single":[22,6],"married":[467,262],"widowed":[20,156],"divorced":[0,15]}}];
+         const DEMO_ETHNICITIES = ["chinese", "malay", "indian", "other"];
+         const AGE_DEMO_TOTAL = AGE_DEMO_COUNTS.reduce((sum, row) => (
+             sum + DEMO_ETHNICITIES.reduce((rowSum, e) => rowSum + row[e].total[0] + row[e].total[1], 0)
+         ), 0);
+         const EDUCATION_COUNTS = [{"range":[20,24],"chinese":{"belowsec":[1605,1049],"secondary":[4316,2552],"postsec":[12544,3566],"diploma":[26244,14230],"degree":[2669,18396],"total":[47378,39794]},"malay":{"belowsec":[1060,831],"secondary":[3247,2744],"postsec":[6241,3526],"diploma":[6507,6249],"degree":[160,1297],"total":[17214,14649]},"indian":{"belowsec":[300,203],"secondary":[1080,627],"postsec":[1951,837],"diploma":[2597,1868],"degree":[245,1784],"total":[6172,5318]},"other":{"belowsec":[105,67],"secondary":[288,170],"postsec":[663,151],"diploma":[1056,794],"degree":[81,540],"total":[2192,1723]}},{"range":[25,29],"chinese":{"belowsec":[2519,1570],"secondary":[4689,3690],"postsec":[7576,4233],"diploma":[22554,18737],"degree":[55632,72956],"total":[92970,101185]},"malay":{"belowsec":[989,1380],"secondary":[2776,2899],"postsec":[8254,5311],"diploma":[8763,8566],"degree":[2873,6255],"total":[23655,24410]},"indian":{"belowsec":[296,330],"secondary":[856,591],"postsec":[2003,1159],"diploma":[2840,2973],"degree":[4154,6267],"total":[10149,11320]},"other":{"belowsec":[84,639],"secondary":[135,252],"postsec":[297,190],"diploma":[766,766],"degree":[657,1401],"total":[1938,3247]}},{"range":[30,34],"chinese":{"belowsec":[2919,3112],"secondary":[5890,5968],"postsec":[7843,4456],"diploma":[20812,22499],"degree":[66673,79549],"total":[104139,115583]},"malay":{"belowsec":[1298,1727],"secondary":[2625,3284],"postsec":[7600,5313],"diploma":[6748,6310],"degree":[3616,5470],"total":[21887,22104]},"indian":{"belowsec":[530,505],"secondary":[1038,1102],"postsec":[1853,1063],"diploma":[2722,2588],"degree":[5221,6935],"total":[11365,12193]},"other":{"belowsec":[72,1300],"secondary":[219,651],"postsec":[396,481],"diploma":[818,838],"degree":[1282,2652],"total":[2787,5922]}},{"range":[35,39],"chinese":{"belowsec":[3993,5264],"secondary":[8693,9135],"postsec":[7502,6253],"diploma":[22131,24883],"degree":[60485,68708],"total":[102803,114242]},"malay":{"belowsec":[1314,2537],"secondary":[3490,4025],"postsec":[6111,3897],"diploma":[5099,4990],"degree":[2918,4223],"total":[18931,19673]},"indian":{"belowsec":[646,815],"secondary":[1092,1244],"postsec":[1426,1130],"diploma":[2994,2891],"degree":[7314,10345],"total":[13471,16425]},"other":{"belowsec":[91,1654],"secondary":[213,889],"postsec":[232,635],"diploma":[655,759],"degree":[2811,4327],"total":[4001,8263]}},{"range":[40,44],"chinese":{"belowsec":[6730,8433],"secondary":[11300,12514],"postsec":[7798,7654],"diploma":[21534,29666],"degree":[54592,60239],"total":[101954,118506]},"malay":{"belowsec":[1437,3231],"secondary":[2760,3684],"postsec":[4098,2660],"diploma":[3343,3293],"degree":[2008,2455],"total":[13646,15323]},"indian":{"belowsec":[597,1171],"secondary":[1204,1608],"postsec":[1781,999],"diploma":[3796,2421],"degree":[10044,10606],"total":[17421,16805]},"other":{"belowsec":[84,1007],"secondary":[277,727],"postsec":[173,501],"diploma":[841,869],"degree":[4593,5338],"total":[5969,8442]}},{"range":[45,49],"chinese":{"belowsec":[12139,15395],"secondary":[15385,20023],"postsec":[12022,12223],"diploma":[20882,27027],"degree":[49649,47017],"total":[110078,121686]},"malay":{"belowsec":[2272,4617],"secondary":[4001,5035],"postsec":[4058,3224],"diploma":[2601,2565],"degree":[1999,1785],"total":[14931,17227]},"indian":{"belowsec":[1011,1501],"secondary":[2000,2026],"postsec":[1945,1437],"diploma":[3594,1626],"degree":[10062,7119],"total":[18614,13708]},"other":{"belowsec":[100,960],"secondary":[240,678],"postsec":[385,643],"diploma":[728,1015],"degree":[5718,4767],"total":[7171,8063]}},{"range":[50,54],"chinese":{"belowsec":[21193,23679],"secondary":[18476,27088],"postsec":[11498,13253],"diploma":[17994,19839],"degree":[36378,29106],"total":[105539,112965]},"malay":{"belowsec":[4577,6053],"secondary":[5359,7565],"postsec":[3741,3330],"diploma":[1982,1764],"degree":[1252,1495],"total":[16909,20208]},"indian":{"belowsec":[1882,2557],"secondary":[2219,2684],"postsec":[1782,1400],"diploma":[2309,1121],"degree":[7053,4023],"total":[15245,11783]},"other":{"belowsec":[107,1067],"secondary":[390,672],"postsec":[280,456],"diploma":[551,683],"degree":[4436,2942],"total":[5763,5819]}},{"range":[55,59],"chinese":{"belowsec":[37082,38783],"secondary":[23419,34405],"postsec":[10949,13525],"diploma":[13527,13426],"degree":[26769,18628],"total":[111747,118767]},"malay":{"belowsec":[8063,9537],"secondary":[6187,8498],"postsec":[3420,2528],"diploma":[1667,936],"degree":[702,1022],"total":[20041,22522]},"indian":{"belowsec":[3297,3694],"secondary":[2539,2961],"postsec":[1690,1734],"diploma":[1366,848],"degree":[4411,2483],"total":[13302,11720]},"other":{"belowsec":[244,749],"secondary":[392,581],"postsec":[271,423],"diploma":[766,389],"degree":[2968,1444],"total":[4641,3587]}},{"range":[60,64],"chinese":{"belowsec":[44723,47298],"secondary":[24744,34979],"postsec":[10961,13462],"diploma":[12388,9273],"degree":[16610,10911],"total":[109426,115923]},"malay":{"belowsec":[7517,9401],"secondary":[5385,5960],"postsec":[2437,1986],"diploma":[1085,645],"degree":[406,303],"total":[16830,18296]},"indian":{"belowsec":[3419,4157],"secondary":[2222,2771],"postsec":[1364,1235],"diploma":[1153,675],"degree":[1806,1555],"total":[9964,10393]},"other":{"belowsec":[130,435],"secondary":[502,620],"postsec":[284,269],"diploma":[408,224],"degree":[1386,913],"total":[2709,2461]}},{"range":[65,69],"chinese":{"belowsec":[42962,50908],"secondary":[20121,24907],"postsec":[9216,8680],"diploma":[8518,4742],"degree":[10826,6012],"total":[91643,95248]},"malay":{"belowsec":[6176,8003],"secondary":[3406,3586],"postsec":[1284,975],"diploma":[445,55],"degree":[107,124],"total":[11417,12744]},"indian":{"belowsec":[2484,4118],"secondary":[1640,1933],"postsec":[1223,696],"diploma":[569,214],"degree":[1445,636],"total":[7360,7597]},"other":{"belowsec":[324,425],"secondary":[310,341],"postsec":[258,75],"diploma":[270,147],"degree":[820,399],"total":[1984,1387]}},{"range":[70,74],"chinese":{"belowsec":[36988,48373],"secondary":[13364,15935],"postsec":[6449,5299],"diploma":[5126,2966],"degree":[7378,3045],"total":[69304,75617]},"malay":{"belowsec":[4088,6701],"secondary":[1712,1733],"postsec":[686,514],"diploma":[315,167],"degree":[122,23],"total":[6925,9138]},"indian":{"belowsec":[2102,3256],"secondary":[1183,1115],"postsec":[612,529],"diploma":[363,58],"degree":[917,265],"total":[5177,5221]},"other":{"belowsec":[286,296],"secondary":[296,219],"postsec":[108,124],"diploma":[149,85],"degree":[464,193],"total":[1303,917]}},{"range":[75,79],"chinese":{"belowsec":[21021,33859],"secondary":[5857,5196],"postsec":[2979,2465],"diploma":[2560,1494],"degree":[3062,1234],"total":[35479,44247]},"malay":{"belowsec":[2038,3900],"secondary":[522,365],"postsec":[274,48],"diploma":[110,23],"degree":[97,10],"total":[3043,4348]},"indian":{"belowsec":[1029,1810],"secondary":[335,436],"postsec":[214,99],"diploma":[153,82],"degree":[204,132],"total":[1937,2559]},"other":{"belowsec":[78,167],"secondary":[128,166],"postsec":[17,7],"diploma":[88,19],"degree":[198,78],"total":[510,438]}}];
+
          const FILTERS = [
              {
                  key: "gender", label: "Gender", multi: true,
                  options: [
-                     { value: "female", label: "Female", share: 0.508 },
-                     { value: "male",   label: "Male",   share: 0.492 },
+                     { value: "female", label: "Female", share: 0.519 },
+                     { value: "male",   label: "Male",   share: 0.481 },
                  ],
              },
              {
@@ -623,10 +650,10 @@
              {
                  key: "ethnicity", label: "Ethnicity", multi: true,
                  options: [
-                     { value: "chinese", label: "Chinese", share: 0.741 },
-                     { value: "malay",   label: "Malay",   share: 0.135 },
-                     { value: "indian",  label: "Indian",  share: 0.090 },
-                     { value: "other",   label: "Other",   share: 0.034 },
+                     { value: "chinese", label: "Chinese", share: 0.754 },
+                     { value: "malay",   label: "Malay",   share: 0.129 },
+                     { value: "indian",  label: "Indian",  share: 0.086 },
+                     { value: "other",   label: "Other",   share: 0.030 },
                  ],
              },
              {
@@ -645,9 +672,9 @@
                  key: "marital", label: "Marital status", multi: true,
                  options: [
                      { value: "single",   label: "Single",   share: 0.315 },
-                     { value: "married",  label: "Married",  share: 0.598 },
-                     { value: "divorced", label: "Divorced",  share: 0.047 },
-                     { value: "widowed",  label: "Widowed",  share: 0.040 },
+                     { value: "married",  label: "Married",  share: 0.588 },
+                     { value: "divorced", label: "Divorced",  share: 0.043 },
+                     { value: "widowed",  label: "Widowed",  share: 0.053 },
                  ],
              },
              {
@@ -673,11 +700,11 @@
              {
                  key: "education", label: "Highest qualification", multi: true,
                  options: [
-                     { value: "belowsec",  label: "Below sec", share: 0.18 },
-                     { value: "secondary", label: "Secondary",  share: 0.17 },
-                     { value: "postsec",   label: "Post-sec",   share: 0.10 },
-                     { value: "diploma",   label: "Diploma",    share: 0.19 },
-                     { value: "degree",    label: "University+", share: 0.36 },
+                     { value: "belowsec",  label: "Below sec", share: 0.222 },
+                     { value: "secondary", label: "Secondary",  share: 0.164 },
+                     { value: "postsec",   label: "Post-sec",   share: 0.108 },
+                     { value: "diploma",   label: "Diploma",    share: 0.172 },
+                     { value: "degree",    label: "University+", share: 0.335 },
                  ],
              },
              {
@@ -734,6 +761,130 @@
              if (any) return mB * p(hF.normal.male) + fB * p(hF.normal.female);
              if (genderSet.has("male")) return p(hF.normal.male);
              return p(hF.normal.female);
+         }
+         function selectedValues(key, fallback) {
+             const s = state[key];
+             if (!s || s.size === 0) return fallback;
+             return [...s];
+         }
+         function jointEthnicReligionShare() {
+             const ethnicities = selectedValues("ethnicity", Object.keys(ETHNIC_RELIGION_COUNTS));
+             const religions = selectedValues("religion", ["buddhist", "christian", "muslim", "taoist", "hindu", "none", "other"]);
+             let count = 0;
+             for (const e of ethnicities) {
+                 const row = ETHNIC_RELIGION_COUNTS[e];
+                 if (!row) continue;
+                 for (const r of religions) count += row[r] || 0;
+             }
+             return count / CENSUS_TOTAL;
+         }
+         function ageIsActive() {
+             const f = FILTERS.find(x => x.key === "ageRange");
+             return state.ageRange_lo > f.min || state.ageRange_hi < f.max;
+         }
+         function ageDemographicCounts() {
+             let lo = state.ageRange_lo, hi = state.ageRange_hi;
+             if (lo > hi) [lo, hi] = [hi, lo];
+             const ethnicities = selectedValues("ethnicity", DEMO_ETHNICITIES);
+             const statuses = selectedValues("marital", ["total"]);
+             const genderIndexes = state.gender.size === 0 || state.gender.size === 2
+                 ? [0, 1]
+                 : (state.gender.has("male") ? [0] : [1]);
+             const byEthnicity = Object.fromEntries(DEMO_ETHNICITIES.map(e => [e, 0]));
+             let total = 0;
+
+             for (const row of AGE_DEMO_COUNTS) {
+                 const [a, b] = row.range;
+                 const overlap = Math.max(0, Math.min(hi, b) - Math.max(lo, a) + 1);
+                 if (!overlap) continue;
+                 const weight = overlap / (b - a + 1);
+                 for (const e of ethnicities) {
+                     for (const status of statuses) {
+                         const counts = row[e][status];
+                         for (const i of genderIndexes) {
+                             const weighted = counts[i] * weight;
+                             byEthnicity[e] += weighted;
+                             total += weighted;
+                         }
+                     }
+                 }
+             }
+             return { total, byEthnicity };
+         }
+         function religionShareWithinDemographic(byEthnicity) {
+             const religions = state.religion;
+             if (!religions || religions.size === 0) return 1;
+             let numerator = 0, denominator = 0;
+             for (const e of DEMO_ETHNICITIES) {
+                 const base = byEthnicity[e] || 0;
+                 if (!base) continue;
+                 const row = ETHNIC_RELIGION_COUNTS[e];
+                 const religionRate = [...religions].reduce((sum, r) => sum + (row[r] || 0), 0) / row.total;
+                 numerator += base * religionRate;
+                 denominator += base;
+             }
+             return denominator ? numerator / denominator : 0;
+         }
+         function educationShareWithinSelection() {
+             const picks = state.education;
+             if (!picks || picks.size === 0) return 1;
+             let lo = state.ageRange_lo, hi = state.ageRange_hi;
+             if (lo > hi) [lo, hi] = [hi, lo];
+             const ethnicities = selectedValues("ethnicity", DEMO_ETHNICITIES);
+             const genderIndexes = state.gender.size === 0 || state.gender.size === 2
+                 ? [0, 1]
+                 : (state.gender.has("male") ? [0] : [1]);
+             let numerator = 0, denominator = 0;
+
+             for (const row of EDUCATION_COUNTS) {
+                 const [a, b] = row.range;
+                 const overlap = Math.max(0, Math.min(hi, b) - Math.max(lo, a) + 1);
+                 if (!overlap) continue;
+                 const weight = overlap / (b - a + 1);
+                 for (const e of ethnicities) {
+                     for (const i of genderIndexes) {
+                         denominator += row[e].total[i] * weight;
+                         for (const edu of picks) numerator += (row[e][edu]?.[i] || 0) * weight;
+                     }
+                 }
+             }
+             return denominator ? numerator / denominator : 0;
+         }
+         function computeProbability(contribs) {
+             let p = 1;
+             const handled = new Set();
+             const hasAge = ageIsActive();
+             const hasEthnicity = state.ethnicity.size > 0;
+             const hasReligion = state.religion.size > 0;
+             const hasGender = state.gender.size > 0;
+             const hasMarital = state.marital.size > 0;
+             const hasEducation = state.education.size > 0;
+             const useAgeDemographics = hasAge || hasGender || hasMarital;
+
+             if (useAgeDemographics) {
+                 const demo = ageDemographicCounts();
+                 p *= demo.total / AGE_DEMO_TOTAL;
+                 handled.add("ageRange");
+                 handled.add("gender");
+                 handled.add("marital");
+                 handled.add("ethnicity");
+                 if (hasReligion) {
+                     p *= religionShareWithinDemographic(demo.byEthnicity);
+                     handled.add("religion");
+                 }
+             } else if (hasEthnicity || hasReligion) {
+                 p *= jointEthnicReligionShare();
+                 handled.add("ethnicity");
+                 handled.add("religion");
+             }
+             if (hasEducation) {
+                 p *= educationShareWithinSelection();
+                 handled.add("education");
+             }
+             for (const { f, share } of contribs) {
+                 if (!handled.has(f.key)) p *= share;
+             }
+             return p;
          }
 
          /* ---------- Formatting ---------- */
@@ -1037,15 +1188,14 @@
 
          /* ---------- Main recompute ---------- */
          function recompute() {
-             let p = 1;
              const contribs = [];
              for (const f of FILTERS) {
                  const { share, label, picks } = computeShare(f);
-                 p *= share;
                  contribs.push({ f, share, label, picks });
                  const meta = document.querySelector(`[data-meta-for="${f.key}"]`);
                  if (meta) meta.textContent = label === "Any" ? "" : fmtPct(share);
              }
+             const p = computeProbability(contribs);
 
              const active = hasAnyActiveFilter();
              const activeCount = countActiveFilters();
@@ -1061,13 +1211,13 @@
                  kickerEl.textContent = "Start with a few filters";
                  headEl.innerHTML = "Pick some criteria";
                  document.getElementById("desc").innerHTML = "Choose filters to estimate how many Singaporeans fit a profile.";
-                 subEl.innerHTML = "Each filter is multiplied as if independent, so treat the result as directional rather than exact.";
+                 subEl.innerHTML = "Ethnicity/religion, age/gender/marital/ethnicity, and education use Census tables where available.";
                  renderEmptyGrid();
              } else {
                  kickerEl.textContent = `${activeCount} filter${activeCount === 1 ? "" : "s"} active`;
                  headEl.innerHTML = `About <span class="num">${fmtInt(matchCount)}</span> adults`;
                  renderDescription(buildDescription(contribs));
-                 subEl.innerHTML = `<b>${fmtPct(p)}</b> of adult residents · <b>1 in ${fmtOneIn(p)}</b> odds`;
+                 subEl.innerHTML = `<b>${fmtPct(p)}</b> of adult residents · <b>1 in ${fmtOneIn(p)}</b> odds · Census correlations where available`;
                  renderGrid(p);
              }
              writeHash();

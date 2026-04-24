@@ -36,5 +36,4 @@ open public/index.html
 
 ## Publishing & Deployment Tips
 - Always rebuild before pushing so `public/` matches the Org sources.
-- Push the generated site to `gh-pages` (manual or CI) after validating locally.
 - If adjusting `publish.el`, document the change in the PR description and verify both Org-to-HTML output and static asset copying.

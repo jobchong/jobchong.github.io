@@ -24,6 +24,9 @@ I'm Job, currently leading teams shipping software and platform tooling.
 - @@html:<a href="https://linkedin.com/in/jobchong/" target="_blank" rel="noopener">LinkedIn</a>@@
 - @@html:<a href="assets/job_chong.pdf" target="_blank" rel="noopener">Resume (PDF)</a>@@
 
+* Fun stuff
+- @@html:<a href="probs/">Who's out there in Singapore?</a>@@: a back-of-envelope SingStat toy for filtering down to a profile and seeing how rare it might be.
+
 * Recent writing
 ** Code contributions (2026-03-20)
 #+include: "prs.org" :lines "4-"

@@ -29,7 +29,7 @@
            :time-stamp-file nil
            :auto-sitemap t
            :sitemap-title "Index"
-           :html-head ,(format "<link rel=\"icon\" type=\"image/svg+xml\" href=\"assets/favicon.svg\" />\n<link rel=\"stylesheet\" href=\"assets/style.css?v=%s\" /><script src=\"assets/fold.js\" defer></script>" style-version))
+           :html-head ,(format "<link rel=\"icon\" type=\"image/svg+xml\" href=\"/assets/favicon.svg\" />\n<link rel=\"stylesheet\" href=\"assets/style.css?v=%s\" /><script src=\"assets/fold.js\" defer></script>" style-version))
           ("org-static"
            :base-directory ,org-root
            :base-extension "css\\|js\\|png\\|jpg\\|gif\\|svg\\|pdf\\|ico\\|webp\\|html"

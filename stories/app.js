@@ -175,7 +175,7 @@
     },
     press(k) { const b = KB.el(k); if (!b) return; b.classList.add('down'); setTimeout(() => b.classList.remove('down'), 130); },
     flutter(k) {
-      const b = KB.el(k); if (!b) return;
+      const b = KB.el(k); if (!b || !b.getClientRects().length) return;
       const r = b.getBoundingClientRect(), s = document.createElement('div');
       s.className = 'flutter'; s.textContent = k;
       s.style.left = r.left + r.width / 2 + 'px'; s.style.top = r.top + 'px';
@@ -317,9 +317,22 @@ ${rowsData().map((r, ri) => `<section class="row">
     }
     spread.classList.add('nofx');
     spread.innerHTML = leftHtml() + rightHtml();
+    screenEl.scrollTop = 0;
     spread.classList.remove('fresh'); void spread.offsetWidth; spread.classList.add('fresh');
     setTimeout(() => spread.classList.remove('nofx'), 60);
     fitText();
+    const spelling = $('.spelling', spread);
+    if (spelling) {
+      spelling.addEventListener('input', (event) => {
+        if (event.isComposing) return;
+        const letters = spelling.value.toLowerCase().match(/[a-z]/g) || [];
+        spelling.value = '';
+        for (const letter of letters) {
+          if (cur().done) break;
+          handleKey(letter);
+        }
+      });
+    }
     $$('.corner.next', spread).forEach((c) => c.addEventListener('click', () => handleKey('ArrowRight')));
     $$('.corner.back', spread).forEach((c) => c.addEventListener('click', () => handleKey('ArrowLeft')));
     const story = R.pages.filter((p) => p.type === 'story').length;
@@ -345,6 +358,7 @@ ${rowsData().map((r, ri) => `<section class="row">
   function fitText() {
     const t = $('.page.right .text', screenEl); if (!t) return;
     t.style.fontSize = '';
+    if (getComputedStyle($('.page.right', screenEl)).containerType === 'normal') return;
     const base = parseFloat(getComputedStyle(t).fontSize);
     // poems may shrink further, since keeping Lear's lines whole matters more there
     const min = Math.max(base * (t.classList.contains('verse') ? 0.62 : 0.74), $('.page.right', screenEl).clientHeight * 0.034);
@@ -379,7 +393,9 @@ ${rowsData().map((r, ri) => `<section class="row">
     const first = R.i === 1 && !R.little && !b.verse && !/^\[/.test(p.text); // a big red initial, old-book style
     return `<div class="page right"><div class="runhead">${esc(b.title)}</div>
 <div class="inner"><div class="text ${sizeCls(p)}${first ? ' dropcap' : ''}${b.verse ? ' verse' : ''}">${textHtml(p, st)}</div>
-${p.after ? `<div class="after${st.done ? ' shown' : ''}">${esc(p.after.text).replace(/\n/g, '<br>')}</div>` : ''}</div>
+${p.after ? `<div class="after${st.done ? ' shown' : ''}">${esc(p.after.text).replace(/\n/g, '<br>')}</div>` : ''}
+${st.done ? '' : '<input class="spelling" aria-label="Type the missing letters" placeholder="Tap to spell" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">'}
+</div>
 <div class="findkey"><span class="hand">&#9758;</span><span class="fk-key"></span></div>
 <div class="folio">${R.i * 2 + 1}</div><button class="corner next${st.done ? ' ready' : ''}" tabindex="-1" aria-label="Next"></button></div>`;
   }
@@ -502,6 +518,7 @@ ${p.after ? `<div class="after${st.done ? ' shown' : ''}">${esc(p.after.text).re
   function pageDone(lead) {
     const p = page(), st = cur();
     st.done = true;
+    $('.spelling', screenEl)?.remove();
     Sound.chime();
     updateHints();
     const corner = $('.corner.next', screenEl); if (corner) corner.classList.add('ready');
@@ -606,6 +623,7 @@ ${p.after ? `<div class="after${st.done ? ' shown' : ''}">${esc(p.after.text).re
   }
   document.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return; // grown-up shortcuts
+    if (e.target.matches('.spelling') && !['Escape', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'].includes(e.key)) return;
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' ', 'Enter', 'Backspace', 'Tab'].includes(e.key)) e.preventDefault();
     if (e.repeat) return;
     handleKey(e.key);

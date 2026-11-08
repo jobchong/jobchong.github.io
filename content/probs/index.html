@@ -2,603 +2,479 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Back-of-envelope estimate of how many adults in Singapore fit a profile, using simple SingStat-inspired filters." />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta name="description" content="Back-of-envelope estimate of how many adults in Singapore fit a profile, built on SingStat and Census 2020 tables." />
         <meta name="theme-color" content="#ededed" />
+        <meta property="og:title" content="Who's out there in Singapore?" />
+        <meta property="og:description" content="Filter Singapore's adult residents down to a profile and see roughly how many people fit." />
+        <meta property="og:url" content="https://www.jobchong.org/probs/" />
         <link rel="canonical" href="https://www.jobchong.org/probs/" />
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
         <title>Who's out there in Singapore? • jobchong.org</title>
-         <style>
+        <style>
          :root {
              --bg: #ededed;
-             --panel: #f3f3f1;
-             --panel-2: #e4e4e4;
-             --surface: #e9e9e9;
-             --surface-strong: #f7f7f7;
+             --paper: #f6f6f4;
+             --chip: #ececea;
+             --sunk: #e1e2de;
+             --line: #d3d7cf;
+             --line-strong: #babdb6;
              --ink: #2e3436;
              --muted: #5e5c64;
-             --accent: #3465a4;
-             --accent-strong: #204a87;
-             --accent-2: #75507b;
-             --good: #4e9a06;
-             --warm: #8f5902;
-             --border: #d3d7cf;
-             --border-strong: #babdb6;
-             --chip-bg: #e4e4e4;
-             --chip-on: #dbe7f7;
-             --chip-on-ink: #204a87;
-             --panel-edge: rgba(255, 255, 255, 0.65);
-             --shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+             --blue: #3465a4;
+             --blue-strong: #204a87;
+             --blue-wash: #dde6f3;
+             --plum: #75507b;
+             --brown: #8f5902;
+             --green: #4e9a06;
              --grid-hit: #3465a4;
-             --grid-dim: #babdb6;
+             --grid-dim: #c9ccc5;
+             --modeline: #d3d7cf;
+             --mono: "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+             --radius: 4px;
+             --ml-h: 34px;
+             color-scheme: light;
          }
          * { box-sizing: border-box; }
-         html, body {
-             margin: 0; padding: 0;
-             color-scheme: light;
+         [hidden] { display: none !important; }
+         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+         body {
+             margin: 0;
              background: var(--bg);
              color: var(--ink);
-             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-             font-size: 15px; line-height: 1.4;
-             height: 100vh; overflow: hidden;
+             font: 14px/1.45 var(--mono);
+             padding-bottom: calc(var(--ml-h) + env(safe-area-inset-bottom, 0px));
          }
-         .wrap {
-             display: grid;
-             grid-template-rows: auto minmax(0, 1fr);
-             gap: 14px;
-             height: 100vh;
-             padding: 16px 20px 18px;
-             max-width: 1540px;
-             margin: 0 auto;
+         button { font: inherit; touch-action: manipulation; }
+         a {
+             color: var(--blue-strong);
+             text-decoration: underline;
+             text-decoration-thickness: 1px;
+             text-underline-offset: 2px;
          }
+         a:hover { background: rgba(32, 74, 135, 0.1); }
+         :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+         .sr-only {
+             position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+             overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+         }
+
+         .page { max-width: 1240px; margin: 0 auto; padding: 20px 20px 28px; }
 
          /* ---------- Header ---------- */
-         header {
-             display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
-             padding: 2px 2px 0;
-         }
-         header h1 {
-             font-size: 18px;
+         .top { margin: 0 0 22px; }
+         .crumb { margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+         .top h1 {
              margin: 0;
-             letter-spacing: -0.02em;
-             white-space: nowrap;
-             color: var(--accent-strong);
+             font-size: 22px;
+             line-height: 1.25;
+             letter-spacing: -0.01em;
+             color: var(--blue-strong);
          }
-         header p { color: var(--muted); margin: 0; font-size: 11px; flex: 1 1 200px; }
-         .site-link { text-decoration: none; white-space: nowrap; }
+         .top h1 .nowrap { white-space: nowrap; }
+         .lede { margin: 6px 0 0; max-width: 68ch; color: var(--muted); }
 
-         .main-grid {
-             display: grid;
-             grid-template-columns: minmax(290px, 340px) minmax(0, 1fr);
-             gap: 16px;
-             min-height: 0;
+         h2 {
+             margin: 0;
+             font-size: 13px;
+             font-weight: 700;
+             color: var(--plum);
          }
-         .panel {
-             background: var(--panel);
-             border: 1px solid var(--border);
-             border-radius: 18px;
-             box-shadow: var(--shadow), inset 0 1px 0 var(--panel-edge);
-             backdrop-filter: none;
-             min-height: 0;
-         }
+         h2::before { content: "* "; }
 
-         /* ---------- Result bar ---------- */
-         .results-panel {
-             padding: 18px;
-             overflow: hidden;
-         }
-         .result-bar {
+         .layout {
              display: grid;
-             grid-template-columns: 1fr;
-             grid-template-rows: minmax(0, 0.96fr) minmax(0, 1.04fr);
-             gap: 18px;
-             height: 100%;
-             min-height: 100%;
-             align-items: stretch;
-         }
-         .result-text {
-             min-width: 0;
-             min-height: 0;
-             display: flex;
-             flex-direction: column;
-             justify-content: space-between;
-             gap: 16px;
-             overflow: hidden;
-             padding: 22px 24px;
-             border: 1px solid var(--border);
-             border-radius: 16px;
-             background: var(--surface-strong);
-         }
-         .result-kicker {
-             color: var(--muted);
-             font-size: 10px;
-             letter-spacing: 0.12em;
-             text-transform: uppercase;
-         }
-         .result-copy {
-             display: grid;
-             min-height: 0;
-             gap: 8px;
-         }
-         .headline {
-             font-size: 26px; font-weight: 700; letter-spacing: -0.02em;
-             color: var(--accent-strong); line-height: 1.15;
-             overflow-wrap: anywhere;
-         }
-         .headline .num { font-size: 36px; }
-         .desc {
-             color: var(--ink); font-size: 15px; margin-top: 2px; line-height: 1.35;
-             display: -webkit-box;
-             -webkit-box-orient: vertical;
-             -webkit-line-clamp: 3;
-             overflow: hidden;
-             overflow-wrap: anywhere;
-         }
-         .desc .tag {
-             display: inline;
-             color: var(--warm); font-weight: 600;
-         }
-         .sub {
-             color: var(--muted); margin-top: 6px; font-size: 12px;
-             display: -webkit-box;
-             -webkit-box-orient: vertical;
-             -webkit-line-clamp: 2;
-             overflow: hidden;
-             overflow-wrap: anywhere;
-         }
-         .sub b { color: var(--ink); font-weight: 600; }
-         .stat-grid {
-             display: grid;
-             grid-template-columns: repeat(2, minmax(0, 1fr));
-             gap: 10px;
-             margin-top: auto;
-         }
-         .stat-card {
-             min-width: 0;
-             padding: 12px 13px;
-             border: 1px solid var(--border);
-             border-radius: 12px;
-             background: var(--surface);
-         }
-         .stat-label {
-             color: var(--muted);
-             font-size: 10px;
-             letter-spacing: 0.08em;
-             text-transform: uppercase;
-         }
-         .stat-value {
-             color: var(--ink);
-             font-size: 18px;
-             font-weight: 700;
-             letter-spacing: -0.02em;
-             margin-top: 6px;
-             overflow-wrap: anywhere;
-         }
-         .stat-note {
-             color: var(--muted);
-             font-size: 11px;
-             margin-top: 4px;
-             overflow-wrap: anywhere;
-         }
-
-         .visual-box {
-             min-width: 0;
-             min-height: 0;
-             display: flex;
-             flex-direction: column;
-             gap: 10px;
-             border: 1px solid var(--border);
-             border-radius: 16px;
-             padding: 14px;
-             background: var(--surface);
-         }
-         .visual-caption {
-             display: grid;
-             gap: 6px;
-         }
-         .visual-summary {
-             display: flex;
-             justify-content: space-between;
-             align-items: baseline;
-             gap: 10px;
-             min-width: 0;
-         }
-         .visual-main {
-             min-width: 0;
-             color: var(--ink);
-             font-size: 18px;
-             font-weight: 700;
-             letter-spacing: -0.02em;
-         }
-         .visual-main strong {
-             color: var(--accent-strong);
-             font-weight: 700;
-         }
-         .visual-note {
-             color: var(--muted);
-             font-size: 11px;
-             text-align: right;
-             white-space: nowrap;
-         }
-         .visual-stage {
-             flex: 1;
-             min-height: 0;
-             height: 100%;
-             aspect-ratio: auto;
-             display: flex;
-             align-items: stretch;
-             justify-content: stretch;
-             background: var(--surface);
-         }
-         .grid-svg {
-             width: 100%;
-             height: 100%;
-             display: block;
+             grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+             gap: 24px;
+             align-items: start;
          }
 
          /* ---------- Filters ---------- */
-         .filters-panel {
-             display: grid;
-             grid-template-rows: auto minmax(0, 1fr);
-             padding: 16px;
+         .filters-head {
+             display: flex;
+             align-items: center;
+             gap: 10px;
+             min-height: 30px;
+             margin: 0 0 10px;
+         }
+         .active-count { font-size: 12px; color: var(--green); white-space: nowrap; }
+         .actions { margin-left: auto; display: flex; gap: 6px; }
+         .btn {
+             appearance: none;
+             min-height: 28px;
+             padding: 4px 10px;
+             border: 1px solid var(--line-strong);
+             border-radius: 3px;
+             background: var(--paper);
+             color: var(--blue-strong);
+             font-size: 12px;
+             white-space: nowrap;
+             cursor: pointer;
+         }
+         .btn:hover:not(:disabled) { background: var(--blue-wash); border-color: var(--blue); }
+         .btn:disabled { color: var(--muted); opacity: 0.55; cursor: default; }
+
+         .filter-list {
+             background: var(--paper);
+             border: 1px solid var(--line);
+             border-radius: var(--radius);
              overflow: hidden;
          }
-         .panel-head {
-             display: grid;
-             grid-template-columns: minmax(0, 1fr) auto;
-             align-items: start;
-             gap: 14px;
-             margin-bottom: 12px;
-         }
-         .panel-head-copy {
-             min-width: 0;
-         }
-         .panel-head-side {
-             display: flex;
-             flex-direction: column;
-             align-items: flex-end;
-             gap: 10px;
-         }
-         .panel-kicker {
-             color: var(--muted);
-             font-size: 10px;
-             text-transform: uppercase;
-             letter-spacing: 0.12em;
-             margin-bottom: 4px;
-         }
-         .panel-title {
-             margin: 0;
-             font-size: 18px;
-             letter-spacing: -0.02em;
-             color: var(--accent-2);
-         }
-         .panel-note {
-             color: var(--good);
-             font-size: 11px;
-             white-space: nowrap;
-         }
-         .panel-controls {
-             display: flex;
-             gap: 6px;
-         }
-         .panel-controls .secondary {
-             min-width: 88px;
-         }
-         .filters-area {
-             display: flex;
-             flex-direction: column;
-             gap: 9px;
-             overflow-y: auto;
-             min-height: 0;
-             padding-right: 2px;
-             overscroll-behavior: contain;
-             -webkit-overflow-scrolling: touch;
-         }
-         .filters-area::-webkit-scrollbar { width: 5px; }
-         .filters-area::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
-
-         .filter {
-             background: var(--surface);
-             border: 1px solid var(--border);
-             border-radius: 12px;
-             padding: 10px 11px;
-         }
+         .filter { padding: 12px 14px 13px; transition: box-shadow 120ms; }
+         .filter + .filter { border-top: 1px solid var(--line); }
+         .filter.is-active { box-shadow: inset 3px 0 0 var(--blue); }
          .filter-head {
-             display: flex; justify-content: space-between; align-items: baseline;
-             margin-bottom: 6px; gap: 6px;
+             display: flex;
+             align-items: baseline;
+             gap: 10px;
+             min-height: 20px;
+             margin-bottom: 8px;
          }
-         .filter-label {
-             font-size: 10px; letter-spacing: 0.05em;
-             text-transform: uppercase; color: var(--muted);
-             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-         }
-         .filter-meta {
-             color: var(--muted); font-size: 10px; white-space: nowrap;
-         }
-         .chips { display: flex; flex-wrap: wrap; gap: 3px; }
-         .chip {
-             display: inline-block;
-             padding: 2px 7px;
-             background: var(--chip-bg);
-             color: var(--ink);
-             border: 1px solid var(--border);
-             border-radius: 999px;
-             font-size: 11px;
-             cursor: pointer;
-             user-select: none;
-             transition: background 120ms, color 120ms, border-color 120ms;
-             line-height: 1.35;
-         }
-         .chip:hover { border-color: var(--accent); }
-         .chip.on {
-             background: var(--chip-on);
-             color: var(--chip-on-ink);
-             border-color: var(--accent);
-             font-weight: 600;
-         }
-         .range-row { display: flex; align-items: center; gap: 5px; }
-         .range-row input[type="number"] {
-             width: 54px; padding: 3px 5px;
-             background: var(--surface-strong); color: var(--ink);
-             border: 1px solid var(--border); border-radius: 5px;
+         .filter-label { font-size: 12px; font-weight: 700; }
+         .filter.is-active .filter-label { color: var(--blue-strong); }
+         .filter-value { margin-left: auto; font-size: 12px; color: var(--muted); white-space: nowrap; }
+         .filter.is-active .filter-value { color: var(--blue-strong); font-weight: 700; }
+         .clear {
+             appearance: none;
+             margin-left: auto;
+             padding: 0 2px;
+             border: 0;
+             background: none;
+             color: var(--muted);
              font-size: 12px;
+             text-decoration: underline;
+             text-underline-offset: 2px;
+             cursor: pointer;
          }
-         .range-row .tick { color: var(--muted); font-size: 11px; }
+         .filter-value + .clear { margin-left: 0; }
+         .clear:hover { color: var(--blue-strong); }
 
-         .secondary {
-             background: var(--panel-2); color: var(--accent-strong);
-             border: 1px solid var(--border);
-             padding: 3px 10px; border-radius: 6px;
-             font-size: 11px; cursor: pointer;
+         .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+         .chip {
+             appearance: none;
+             min-height: 28px;
+             padding: 4px 9px;
+             border: 1px solid var(--line-strong);
+             border-radius: 3px;
+             background: var(--chip);
+             color: var(--ink);
+             font-size: 12px;
+             line-height: 1.3;
+             cursor: pointer;
+             transition: background-color 120ms, border-color 120ms, color 120ms;
          }
-         .secondary:hover {
-             background: rgba(52, 101, 164, 0.1);
-             border-color: var(--border-strong);
+         .chip:hover { border-color: var(--blue); color: var(--blue-strong); }
+         .chip[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+         .chip[aria-pressed="true"]:hover { background: var(--blue-strong); border-color: var(--blue-strong); color: #fff; }
+
+         .range { --thumb: 18px; --range-h: 28px; position: relative; height: var(--range-h); }
+         .range-track {
+             position: absolute;
+             left: calc(var(--thumb) / 2);
+             right: calc(var(--thumb) / 2);
+             top: 50%;
+             height: 4px;
+             margin-top: -2px;
+             border-radius: 2px;
+             background: var(--sunk);
+         }
+         .range-fill {
+             position: absolute;
+             top: 0;
+             bottom: 0;
+             left: calc(var(--lo, 0) * 100%);
+             right: calc((1 - var(--hi, 1)) * 100%);
+             border-radius: 2px;
+             background: var(--line-strong);
+         }
+         .filter.is-active .range-fill { background: var(--blue); }
+         .range input {
+             position: absolute;
+             inset: 0;
+             width: 100%;
+             height: 100%;
+             margin: 0;
+             background: transparent;
+             pointer-events: none;
+             -webkit-appearance: none;
+             appearance: none;
+         }
+         .range input:focus-visible { outline: none; }
+         .range input::-webkit-slider-runnable-track { height: var(--range-h); background: transparent; border: 0; }
+         .range input::-moz-range-track { background: transparent; border: 0; }
+         .range input::-webkit-slider-thumb {
+             -webkit-appearance: none;
+             pointer-events: auto;
+             width: var(--thumb);
+             height: var(--thumb);
+             margin-top: calc((var(--range-h) - var(--thumb)) / 2);
+             border: 2px solid var(--line-strong);
+             border-radius: 50%;
+             background: var(--paper);
+             box-shadow: 0 1px 2px rgba(46, 52, 54, 0.18);
+             cursor: grab;
+         }
+         .range input::-moz-range-thumb {
+             pointer-events: auto;
+             box-sizing: border-box;
+             width: var(--thumb);
+             height: var(--thumb);
+             border: 2px solid var(--line-strong);
+             border-radius: 50%;
+             background: var(--paper);
+             box-shadow: 0 1px 2px rgba(46, 52, 54, 0.18);
+             cursor: grab;
+         }
+         .filter.is-active .range input::-webkit-slider-thumb { border-color: var(--blue); }
+         .filter.is-active .range input::-moz-range-thumb { border-color: var(--blue); }
+         .range input:active::-webkit-slider-thumb { cursor: grabbing; }
+         .range input:active::-moz-range-thumb { cursor: grabbing; }
+         .range input:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--blue); outline-offset: 2px; }
+         .range input:focus-visible::-moz-range-thumb { outline: 2px solid var(--blue); outline-offset: 2px; }
+         .range-ends {
+             display: flex;
+             justify-content: space-between;
+             margin-top: 1px;
+             font-size: 11px;
+             color: var(--muted);
          }
 
-         @media (max-width: 980px) {
-             html, body { height: 100%; min-height: 100dvh; overflow: hidden; }
-             .wrap { height: 100dvh; min-height: 100dvh; padding: 14px; }
-             header {
-                 display: grid;
-                 grid-template-columns: minmax(0, 1fr) auto;
-                 align-items: start;
-                 gap: 10px 12px;
-             }
-             header h1 {
-                 grid-column: 1;
-                 grid-row: 1;
-                 white-space: normal;
-             }
-             header p {
-                 grid-column: 1 / -1;
-                 grid-row: 2;
-                 flex-basis: auto;
-             }
-             .site-link {
-                 grid-column: 2;
-                 grid-row: 1;
-                 align-self: start;
-                 margin-left: 0;
-                 justify-self: end;
-             }
-             .main-grid {
-                 grid-template-columns: 1fr;
-                 grid-template-rows: auto minmax(0, 1fr);
-                 gap: 12px;
-             }
-             .results-panel {
-                 order: 1;
-                 align-self: start;
-                 padding: 0;
+         /* ---------- Results ---------- */
+         .results { display: grid; gap: 16px; min-width: 0; }
+         .card {
+             min-width: 0;
+             padding: 16px 18px 18px;
+             border: 1px solid var(--line);
+             border-radius: var(--radius);
+             background: var(--paper);
+         }
+         .card h2 { margin-bottom: 12px; }
+
+         .est-figure {
+             display: flex;
+             align-items: baseline;
+             gap: 0.18em;
+             margin: 0;
+             font-size: clamp(38px, 4.4vw, 56px);
+             font-weight: 700;
+             line-height: 1.05;
+             letter-spacing: -0.04em;
+             color: var(--blue-strong);
+             font-variant-numeric: tabular-nums;
+         }
+         .est-figure .approx { font-size: 0.6em; font-weight: 400; color: var(--muted); }
+         .est-unit { margin: 8px 0 0; font-weight: 700; }
+         .est-desc { margin: 4px 0 0; }
+         .est-desc .tag { color: var(--brown); font-weight: 700; }
+         .est-desc .sep { color: var(--line-strong); }
+         .est-desc.hint { color: var(--muted); }
+         .est-stats {
+             display: grid;
+             grid-template-columns: repeat(2, minmax(0, 1fr));
+             margin: 16px 0 0;
+             border-top: 1px solid var(--line);
+         }
+         .est-stats > div { min-width: 0; padding-top: 10px; }
+         .est-stats > div + div { padding-left: 16px; border-left: 1px solid var(--line); }
+         .est-stats > div:first-child { padding-right: 16px; }
+         .est-stats dt { font-size: 11px; color: var(--muted); }
+         .est-stats dd {
+             margin: 2px 0 0;
+             font-size: 20px;
+             font-weight: 700;
+             letter-spacing: -0.02em;
+             overflow-wrap: anywhere;
+         }
+
+         .insight { display: grid; gap: 16px; }
+         .viz { display: flex; flex-direction: column; }
+         .viz-stage { position: relative; flex: 1 1 auto; min-height: 180px; }
+         .viz-stage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+         .grid-hit { fill: var(--grid-hit); }
+         .grid-dim { fill: var(--grid-dim); }
+         .caption { margin: 10px 0 0; font-size: 12px; color: var(--muted); }
+         .caption strong { color: var(--blue-strong); }
+
+         .funnel { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+         .funnel li { min-width: 0; }
+         .f-top { display: flex; align-items: baseline; gap: 10px; font-size: 12.5px; }
+         .f-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+         .funnel .base .f-label { color: var(--muted); }
+         .f-kept { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+         .f-count { min-width: 5ch; font-weight: 700; text-align: right; white-space: nowrap; }
+         .f-bar { position: relative; height: 6px; margin-top: 4px; border-radius: 3px; background: var(--sunk); }
+         .f-bar .fill {
+             position: absolute;
+             top: 0;
+             bottom: 0;
+             left: 0;
+             min-width: 2px;
+             border-radius: 3px;
+             background: var(--blue);
+         }
+         .funnel .base .fill { background: var(--line-strong); }
+         .f-bar .tick {
+             position: absolute;
+             top: -3px;
+             bottom: -3px;
+             width: 2px;
+             margin-left: -1px;
+             border-radius: 1px;
+             background: var(--brown);
+         }
+         .note { margin: 14px 0 0; font-size: 11.5px; color: var(--muted); }
+         .legend-tick {
+             display: inline-block;
+             width: 2px;
+             height: 10px;
+             margin: 0 2px;
+             vertical-align: -1px;
+             background: var(--brown);
+         }
+
+         /* ---------- Method ---------- */
+         .method { max-width: 76ch; margin: 28px 0 0; }
+         .method summary {
+             display: inline-block;
+             font-size: 13px;
+             font-weight: 700;
+             color: var(--plum);
+             cursor: pointer;
+             list-style: none;
+         }
+         .method summary::-webkit-details-marker { display: none; }
+         .method summary::before { content: "* "; }
+         .method:not([open]) summary::after { content: "..."; }
+         .method ul { margin: 10px 0 0; padding-left: 2.2em; }
+         .method li { margin: 0 0 6px; }
+
+         /* ---------- Modeline ---------- */
+         .modeline {
+             position: fixed;
+             left: 0;
+             right: 0;
+             bottom: 0;
+             z-index: 10;
+             display: flex;
+             gap: 2ch;
+             padding: 6px 12px calc(7px + env(safe-area-inset-bottom, 0px));
+             border-top: 1px solid var(--line-strong);
+             background: var(--modeline);
+             box-shadow: 0 -1px 0 var(--line-strong);
+             color: var(--ink);
+             font-size: 13px;
+             white-space: pre;
+             overflow: hidden;
+         }
+         .ml-est { color: var(--blue-strong); font-weight: 700; overflow: hidden; text-overflow: ellipsis; }
+         .ml-mode { margin-left: auto; }
+
+         @media (min-width: 1120px) {
+             .insight { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+         }
+         /* Keep results in view while scrolling the filters, where they fit on screen. */
+         @media (min-width: 1120px) and (min-height: 680px) {
+             .results {
                  position: sticky;
-                 top: 0;
-                 z-index: 2;
-                 overflow: hidden;
-                 background: transparent;
-                 border: 0;
-                 box-shadow: none;
-                 backdrop-filter: none;
-             }
-             .filters-panel {
-                 order: 2;
-                 position: relative;
-                 padding: 28px 16px calc(16px + env(safe-area-inset-bottom, 0px));
-                 border-radius: 22px;
-                 background: var(--surface-strong);
-             }
-             .filters-panel::before {
-                 content: "";
-                 position: absolute;
-                 top: 12px;
-                 left: 50%;
-                 transform: translateX(-50%);
-                 width: 46px;
-                 height: 5px;
-                 border-radius: 999px;
-                 background: var(--border-strong);
-                 display: block;
-             }
-             .panel-head {
-                 grid-template-columns: minmax(0, 1fr) auto;
-                 align-items: end;
-                 gap: 10px 14px;
-             }
-             .panel-head-side {
-                 flex-direction: row;
-                 flex-wrap: wrap;
-                 align-items: center;
-                 justify-content: flex-end;
-                 gap: 8px 10px;
-             }
-             .panel-controls {
-                 display: flex;
-                 flex-wrap: wrap;
-                 justify-content: flex-end;
-                 gap: 8px;
-             }
-             .panel-controls .secondary {
-                 min-width: 0;
-                 width: auto;
-             }
-             .filters-area {
-                 padding-right: 4px;
-             }
-             .result-bar {
-                 display: block;
-                 height: auto;
-                 min-height: 0;
-             }
-             .result-text {
-                 min-height: 0;
-                 overflow: hidden;
-                 padding: 16px;
-                 gap: 10px;
-                 justify-content: flex-start;
-             }
-             .result-copy {
-                 max-width: none;
-                 gap: 6px;
-             }
-             .headline {
-                 font-size: 20px;
-             }
-             .headline .num {
-                 font-size: 28px;
-             }
-             .desc,
-             .sub {
-                 display: -webkit-box;
-                 -webkit-box-orient: vertical;
-                 overflow: hidden;
-             }
-             .desc {
-                 font-size: 13px;
-                 -webkit-line-clamp: 2;
-             }
-             .sub {
-                 margin-top: 0;
-                 font-size: 11px;
-                 -webkit-line-clamp: 2;
-             }
-             .stat-grid,
-             .visual-box {
-                 display: none;
+                 top: 16px;
+                 max-height: calc(100vh - var(--ml-h) - 32px);
+                 max-height: calc(100dvh - var(--ml-h) - 32px);
+                 overflow-y: auto;
+                 scrollbar-width: thin;
              }
          }
-         @media (max-width: 560px) {
-             .wrap { padding: 12px; gap: 12px; }
-             header { gap: 10px; }
-             header h1 { font-size: 16px; }
-             header p { font-size: 12px; }
-             button.secondary {
-                 padding: 7px 10px;
-             }
-             .filters-panel,
-             .results-panel { padding: 0; }
-             .filters-panel {
-                 padding: 26px 12px calc(14px + env(safe-area-inset-bottom, 0px));
-             }
-             .panel-head {
-                 grid-template-columns: minmax(0, 1fr) auto;
-                 align-items: end;
-                 gap: 10px 12px;
-             }
-             .panel-head-side {
-                 flex-direction: row;
-                 flex-wrap: wrap;
-                 align-items: center;
-                 justify-content: flex-end;
-                 gap: 8px;
-             }
-             .result-bar {
-                 grid-template-columns: 1fr;
-                 grid-template-rows: minmax(0, 1.12fr) minmax(96px, 0.88fr);
-                 gap: 8px;
-             }
-             .result-text {
-                 padding: 14px;
-                 gap: 8px;
-             }
-             .headline {
-                 font-size: 18px;
-             }
-             .headline .num {
-                 font-size: 24px;
-             }
-             .desc {
-                 font-size: 12px;
-             }
-             .visual-box {
-                 padding: 8px;
-             }
-             .visual-caption {
-                 font-size: 9px;
-             }
-             .visual-summary {
-                 gap: 8px;
-             }
-             .visual-main {
-                 font-size: 14px;
-             }
-             .visual-note {
-                 font-size: 9px;
-                 white-space: normal;
-             }
+         @media (max-width: 859px) {
+             .page { padding: 16px 16px 24px; }
+             .top { margin-bottom: 16px; }
+             .top h1 { font-size: 19px; }
+             .layout { display: flex; flex-direction: column; gap: 16px; }
+             .results { display: contents; }
+             .estimate { order: 0; }
+             .filters { order: 1; }
+             .insight { order: 2; }
+             .est-figure { font-size: 40px; }
+             .btn { min-height: 34px; }
+             .chip { min-height: 34px; padding: 6px 11px; font-size: 13px; }
+             .range { --thumb: 24px; --range-h: 36px; }
+             .ml-mode { display: none; }
+         }
+         @media (max-width: 380px) {
+             .est-figure { font-size: 34px; }
+             .est-stats dd { font-size: 17px; }
+             .filters-head { flex-wrap: wrap; }
+         }
+         @media (prefers-reduced-motion: reduce) {
+             *, *::before, *::after { transition: none !important; }
          }
         </style>
     </head>
     <body>
-        <div class="wrap">
-            <header>
-                <h1>Who's out there in Singapore? 🇸🇬</h1>
-                <p>Back-of-envelope estimate from SingStat, with a few Census-backed correlations.</p>
-                <a class="secondary site-link" href="/" rel="home">jobchong.org</a>
+        <div class="page">
+            <header class="top">
+                <nav class="crumb" aria-label="Breadcrumb"><a href="/" rel="home">jobchong.org</a> / probs</nav>
+                <h1>Who's out there in <span class="nowrap">Singapore? 🇸🇬</span></h1>
+                <p class="lede">A back-of-envelope estimate of how many adult residents fit a profile, built on SingStat and Census 2020 tables.</p>
             </header>
 
-            <div class="main-grid">
-                <aside class="filters-panel panel">
-                    <div class="panel-head">
-                        <div class="panel-head-copy">
-                            <div class="panel-kicker">Refine the estimate</div>
-                            <h2 class="panel-title">Filters</h2>
-                        </div>
-                        <div class="panel-head-side">
-                            <div class="panel-note" id="filterSummary">All adults</div>
-                            <div class="panel-controls">
-                                <button class="secondary" id="reset">Reset</button>
-                                <button class="secondary" id="share">Copy link</button>
-                            </div>
+            <main class="layout">
+                <section class="filters" aria-labelledby="filtersTitle">
+                    <div class="filters-head">
+                        <h2 id="filtersTitle">Filters</h2>
+                        <span class="active-count" id="activeCount">none active</span>
+                        <div class="actions">
+                            <button type="button" class="btn" id="reset" disabled>Reset</button>
+                            <button type="button" class="btn" id="share">Copy link</button>
                         </div>
                     </div>
-                    <div class="filters-area" id="filters"></div>
-                </aside>
-
-                <section class="results-panel panel">
-                    <div class="result-bar">
-                        <div class="result-text">
-                            <div class="result-kicker" id="resultKicker">Start with a few filters</div>
-                            <div class="result-copy">
-                                <div class="headline" id="headline">Pick some criteria</div>
-                                <div class="desc" id="desc"></div>
-                                <div class="sub" id="sub"></div>
-                            </div>
-                            <div class="stat-grid" id="statGrid"></div>
-                        </div>
-                        <div class="visual-box">
-                            <div class="visual-caption">
-                                <div class="visual-summary">
-                                    <div class="visual-main" id="visCapLeft">&nbsp;</div>
-                                    <div class="visual-note" id="visCapRight">&nbsp;</div>
-                                </div>
-                            </div>
-                            <div class="visual-stage">
-                                <svg id="gridSvg" class="grid-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"></svg>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="filter-list" id="filters"></div>
                 </section>
-            </div>
+
+                <div class="results">
+                    <section class="card estimate" aria-labelledby="estimateTitle">
+                        <h2 id="estimateTitle">Estimate</h2>
+                        <p class="est-figure"><span class="approx" id="approx" hidden>≈</span><span id="estNum">3,600,000</span></p>
+                        <p class="est-unit" id="estUnit">adult residents in Singapore</p>
+                        <p class="est-desc hint" id="estDesc">Pick a few filters to narrow it down.</p>
+                        <dl class="est-stats">
+                            <div><dt>share of adults</dt><dd id="statShare">100%</dd></div>
+                            <div><dt>random adult fits</dt><dd id="statOdds">everyone</dd></div>
+                        </dl>
+                        <p class="sr-only" id="liveSummary" aria-live="polite"></p>
+                    </section>
+
+                    <div class="insight">
+                        <section class="card viz" aria-labelledby="vizTitle">
+                            <h2 id="vizTitle">Out of 100 adults</h2>
+                            <div class="viz-stage" id="vizStage">
+                                <svg id="gridSvg" role="img" aria-label="" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"></svg>
+                            </div>
+                            <p class="caption" id="vizCap">&nbsp;</p>
+                        </section>
+
+                        <section class="card breakdown" aria-labelledby="funnelTitle">
+                            <h2 id="funnelTitle">How it narrows</h2>
+                            <ol class="funnel" id="funnel"></ol>
+                            <p class="note" id="funnelNote"></p>
+                        </section>
+                    </div>
+                </div>
+            </main>
+
+            <details class="method">
+                <summary>How this is estimated</summary>
+                <ul>
+                    <li>Gender, age, ethnicity and marital status are read together from Census 2020 tables of residents aged 20–79, so they move together the way they do in real life (most 25-year-olds are single; most 45-year-olds aren't).</li>
+                    <li>Religion is applied through the ethnic mix of whoever is left, using Census 2020 religion by ethnic group.</li>
+                    <li>Highest qualification is matched on age, sex and ethnicity from Census 2020.</li>
+                    <li>Height uses a normal curve by sex (men around 171&nbsp;cm, women around 160&nbsp;cm).</li>
+                    <li>Income, housing, smoking and children use rough national shares and are treated as independent of everything else, so profiles that lean on them are the shakiest.</li>
+                    <li>Everything is scaled to about 3.6 million adult residents. Treat every number here as a ballpark, not a census.</li>
+                </ul>
+            </details>
+            <noscript><p>This page needs JavaScript to run the estimate.</p></noscript>
         </div>
+
+        <div class="modeline" aria-hidden="true"><span id="mlState">U:---</span><span>probs</span><span class="ml-est" id="mlEst"></span><span class="ml-mode" id="mlMode">(Probs)</span></div>
 
         <script>
          const ADULT_POP = 3_600_000;
@@ -639,7 +515,7 @@
                  ],
              },
              {
-                 key: "ageRange", label: "Age range", kind: "range",
+                 key: "ageRange", label: "Age", kind: "range",
                  unit: "years", min: 20, max: 79, defaultLo: 20, defaultHi: 79,
                  buckets: [
                      [20,24,0.081],[25,29,0.092],[30,34,0.098],[35,39,0.100],
@@ -653,19 +529,19 @@
                      { value: "chinese", label: "Chinese", share: 0.754 },
                      { value: "malay",   label: "Malay",   share: 0.129 },
                      { value: "indian",  label: "Indian",  share: 0.086 },
-                     { value: "other",   label: "Other",   share: 0.030 },
+                     { value: "other",   label: "Other",   share: 0.030, phrase: "other ethnicity" },
                  ],
              },
              {
                  key: "religion", label: "Religion", multi: true,
                  options: [
-                     { value: "buddhist",  label: "Buddhist",    share: 0.311 },
-                     { value: "christian", label: "Christian",   share: 0.188 },
-                     { value: "muslim",    label: "Muslim",      share: 0.157 },
-                     { value: "taoist",    label: "Taoist",      share: 0.088 },
-                     { value: "hindu",     label: "Hindu",       share: 0.050 },
-                     { value: "none",      label: "No religion", share: 0.201 },
-                     { value: "other",     label: "Other religion", share: 0.006 },
+                     { value: "buddhist",  label: "Buddhist",       share: 0.311 },
+                     { value: "christian", label: "Christian",      share: 0.188 },
+                     { value: "muslim",    label: "Muslim",         share: 0.157 },
+                     { value: "taoist",    label: "Taoist",         share: 0.088 },
+                     { value: "hindu",     label: "Hindu",          share: 0.050 },
+                     { value: "none",      label: "No religion",    share: 0.201, phrase: "no religion" },
+                     { value: "other",     label: "Other religion", share: 0.006, phrase: "other religion" },
                  ],
              },
              {
@@ -673,7 +549,7 @@
                  options: [
                      { value: "single",   label: "Single",   share: 0.315 },
                      { value: "married",  label: "Married",  share: 0.588 },
-                     { value: "divorced", label: "Divorced",  share: 0.043 },
+                     { value: "divorced", label: "Divorced", share: 0.043 },
                      { value: "widowed",  label: "Widowed",  share: 0.053 },
                  ],
              },
@@ -686,7 +562,7 @@
                  },
              },
              {
-                 key: "income", label: "Monthly income (SGD)", multi: true,
+                 key: "income", label: "Monthly income", multi: true,
                  options: [
                      { value: "u2k",    label: "<$2k",     share: 0.38 },
                      { value: "2to4",   label: "$2k–4k",   share: 0.19 },
@@ -700,40 +576,78 @@
              {
                  key: "education", label: "Highest qualification", multi: true,
                  options: [
-                     { value: "belowsec",  label: "Below sec", share: 0.222 },
-                     { value: "secondary", label: "Secondary",  share: 0.164 },
-                     { value: "postsec",   label: "Post-sec",   share: 0.108 },
-                     { value: "diploma",   label: "Diploma",    share: 0.172 },
-                     { value: "degree",    label: "University+", share: 0.335 },
+                     { value: "belowsec",  label: "Below secondary", share: 0.222, phrase: "below-secondary" },
+                     { value: "secondary", label: "Secondary",       share: 0.164, phrase: "secondary" },
+                     { value: "postsec",   label: "Post-secondary",  share: 0.108, phrase: "post-secondary" },
+                     { value: "diploma",   label: "Diploma",         share: 0.172, phrase: "diploma" },
+                     { value: "degree",    label: "University+",     share: 0.335, phrase: "university" },
                  ],
              },
              {
-                 key: "housing", label: "Housing type", multi: true,
+                 key: "housing", label: "Housing", multi: true,
                  options: [
-                     { value: "hdb12",    label: "HDB 1–2rm",   share: 0.06 },
+                     { value: "hdb12",    label: "HDB 1–2rm",    share: 0.06 },
                      { value: "hdb3",     label: "HDB 3rm",      share: 0.17 },
                      { value: "hdb4",     label: "HDB 4rm",      share: 0.31 },
                      { value: "hdb5exec", label: "HDB 5rm/Exec", share: 0.23 },
-                     { value: "condo",    label: "Condo",         share: 0.17 },
-                     { value: "landed",   label: "Landed",        share: 0.05 },
-                     { value: "other",    label: "Other",         share: 0.01 },
+                     { value: "condo",    label: "Condo",        share: 0.17 },
+                     { value: "landed",   label: "Landed",       share: 0.05 },
+                     { value: "other",    label: "Other",        share: 0.01, phrase: "other housing" },
                  ],
              },
              {
-                 key: "smoker", label: "Smoker", multi: false,
+                 key: "smoker", label: "Smoking", multi: false,
                  options: [
-                     { value: "no",  label: "Non-smoker", share: 0.90 },
-                     { value: "yes", label: "Smoker",     share: 0.10 },
+                     { value: "no",  label: "Non-smoker", share: 0.90, phrase: "non-smoker" },
+                     { value: "yes", label: "Smoker",     share: 0.10, phrase: "smoker" },
                  ],
              },
              {
-                 key: "kids", label: "Has children", multi: false,
+                 key: "kids", label: "Children", multi: false,
                  options: [
-                     { value: "no",  label: "No",  share: 0.43 },
-                     { value: "yes", label: "Yes", share: 0.57 },
+                     { value: "no",  label: "No children",  share: 0.43, phrase: "no children" },
+                     { value: "yes", label: "Has children", share: 0.57, phrase: "has children" },
                  ],
              },
          ];
+         const FILTER_BY_KEY = new Map(FILTERS.map(f => [f.key, f]));
+
+         /* ---------- State ---------- */
+         function blankState() {
+             const s = {};
+             for (const f of FILTERS) {
+                 if (f.kind === "range") {
+                     s[f.key + "_lo"] = f.defaultLo;
+                     s[f.key + "_hi"] = f.defaultHi;
+                 } else {
+                     s[f.key] = new Set();
+                 }
+             }
+             return s;
+         }
+         function rangeOf(f, s) {
+             const a = s[f.key + "_lo"], b = s[f.key + "_hi"];
+             return a <= b ? [a, b] : [b, a];
+         }
+         function isActive(f, s) {
+             if (f.kind === "range") {
+                 const [lo, hi] = rangeOf(f, s);
+                 return lo > f.min || hi < f.max;
+             }
+             return s[f.key].size > 0;
+         }
+         function copyFilter(f, from, to) {
+             if (f.kind === "range") {
+                 to[f.key + "_lo"] = from[f.key + "_lo"];
+                 to[f.key + "_hi"] = from[f.key + "_hi"];
+             } else {
+                 to[f.key] = new Set(from[f.key]);
+             }
+         }
+         function selectedOptions(f, s) {
+             return f.options.filter(o => s[f.key].has(o.value));
+         }
+         let state = blankState();
 
          /* ---------- Math ---------- */
          function normCdf(x, mean, sd) {
@@ -743,33 +657,36 @@
              const p = d * t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
              return z > 0 ? 1 - p : p;
          }
+         function bucketWeight([a, b], lo, hi) {
+             const overlap = Math.max(0, Math.min(hi, b) - Math.max(lo, a) + 1);
+             return overlap / (b - a + 1);
+         }
+         function genderIndexes(s) {
+             if (s.gender.size !== 1) return [0, 1];
+             return s.gender.has("male") ? [0] : [1];
+         }
+         function selectedValues(s, key, fallback) {
+             const v = s[key];
+             return v && v.size ? [...v] : fallback;
+         }
          function ageShare(lo, hi, buckets) {
              let tot = 0, match = 0;
-             for (const [a, b, s] of buckets) {
-                 tot += s;
-                 const overlap = Math.max(0, Math.min(hi, b) - Math.max(lo, a) + 1);
-                 if (overlap > 0) match += s * (overlap / (b - a + 1));
+             for (const [a, b, share] of buckets) {
+                 tot += share;
+                 match += share * bucketWeight([a, b], lo, hi);
              }
              return Math.min(1, match / tot);
          }
          function heightShare(lo, hi, genderSet) {
-             const hF = FILTERS.find(f => f.key === "heightRange");
-             const gF = FILTERS.find(f => f.key === "gender");
-             const p = (n) => Math.max(0, normCdf(hi, n.mean, n.sd) - normCdf(lo, n.mean, n.sd));
-             const mB = gF.options[1].share, fB = gF.options[0].share;
-             const any = !genderSet || genderSet.size === 0 || genderSet.size === 2;
-             if (any) return mB * p(hF.normal.male) + fB * p(hF.normal.female);
-             if (genderSet.has("male")) return p(hF.normal.male);
-             return p(hF.normal.female);
+             const { normal } = FILTER_BY_KEY.get("heightRange");
+             const [female, male] = FILTER_BY_KEY.get("gender").options;
+             const within = n => Math.max(0, normCdf(hi, n.mean, n.sd) - normCdf(lo, n.mean, n.sd));
+             if (genderSet.size !== 1) return male.share * within(normal.male) + female.share * within(normal.female);
+             return genderSet.has("male") ? within(normal.male) : within(normal.female);
          }
-         function selectedValues(key, fallback) {
-             const s = state[key];
-             if (!s || s.size === 0) return fallback;
-             return [...s];
-         }
-         function jointEthnicReligionShare() {
-             const ethnicities = selectedValues("ethnicity", Object.keys(ETHNIC_RELIGION_COUNTS));
-             const religions = selectedValues("religion", ["buddhist", "christian", "muslim", "taoist", "hindu", "none", "other"]);
+         function jointEthnicReligionShare(s) {
+             const ethnicities = selectedValues(s, "ethnicity", Object.keys(ETHNIC_RELIGION_COUNTS));
+             const religions = selectedValues(s, "religion", ["buddhist", "christian", "muslim", "taoist", "hindu", "none", "other"]);
              let count = 0;
              for (const e of ethnicities) {
                  const row = ETHNIC_RELIGION_COUNTS[e];
@@ -778,31 +695,20 @@
              }
              return count / CENSUS_TOTAL;
          }
-         function ageIsActive() {
-             const f = FILTERS.find(x => x.key === "ageRange");
-             return state.ageRange_lo > f.min || state.ageRange_hi < f.max;
-         }
-         function ageDemographicCounts() {
-             let lo = state.ageRange_lo, hi = state.ageRange_hi;
-             if (lo > hi) [lo, hi] = [hi, lo];
-             const ethnicities = selectedValues("ethnicity", DEMO_ETHNICITIES);
-             const statuses = selectedValues("marital", ["total"]);
-             const genderIndexes = state.gender.size === 0 || state.gender.size === 2
-                 ? [0, 1]
-                 : (state.gender.has("male") ? [0] : [1]);
+         function ageDemographicCounts(s) {
+             const [lo, hi] = rangeOf(FILTER_BY_KEY.get("ageRange"), s);
+             const ethnicities = selectedValues(s, "ethnicity", DEMO_ETHNICITIES);
+             const statuses = selectedValues(s, "marital", ["total"]);
+             const genders = genderIndexes(s);
              const byEthnicity = Object.fromEntries(DEMO_ETHNICITIES.map(e => [e, 0]));
              let total = 0;
-
              for (const row of AGE_DEMO_COUNTS) {
-                 const [a, b] = row.range;
-                 const overlap = Math.max(0, Math.min(hi, b) - Math.max(lo, a) + 1);
-                 if (!overlap) continue;
-                 const weight = overlap / (b - a + 1);
+                 const weight = bucketWeight(row.range, lo, hi);
+                 if (!weight) continue;
                  for (const e of ethnicities) {
                      for (const status of statuses) {
-                         const counts = row[e][status];
-                         for (const i of genderIndexes) {
-                             const weighted = counts[i] * weight;
+                         for (const i of genders) {
+                             const weighted = row[e][status][i] * weight;
                              byEthnicity[e] += weighted;
                              total += weighted;
                          }
@@ -811,263 +717,257 @@
              }
              return { total, byEthnicity };
          }
-         function religionShareWithinDemographic(byEthnicity) {
-             const religions = state.religion;
-             if (!religions || religions.size === 0) return 1;
+         function religionShareWithinDemographic(s, byEthnicity) {
+             if (!s.religion.size) return 1;
              let numerator = 0, denominator = 0;
              for (const e of DEMO_ETHNICITIES) {
                  const base = byEthnicity[e] || 0;
                  if (!base) continue;
                  const row = ETHNIC_RELIGION_COUNTS[e];
-                 const religionRate = [...religions].reduce((sum, r) => sum + (row[r] || 0), 0) / row.total;
-                 numerator += base * religionRate;
+                 let picked = 0;
+                 for (const r of s.religion) picked += row[r] || 0;
+                 numerator += base * (picked / row.total);
                  denominator += base;
              }
              return denominator ? numerator / denominator : 0;
          }
-         function educationShareWithinSelection() {
-             const picks = state.education;
-             if (!picks || picks.size === 0) return 1;
-             let lo = state.ageRange_lo, hi = state.ageRange_hi;
-             if (lo > hi) [lo, hi] = [hi, lo];
-             const ethnicities = selectedValues("ethnicity", DEMO_ETHNICITIES);
-             const genderIndexes = state.gender.size === 0 || state.gender.size === 2
-                 ? [0, 1]
-                 : (state.gender.has("male") ? [0] : [1]);
+         function educationShareWithinSelection(s) {
+             if (!s.education.size) return 1;
+             const [lo, hi] = rangeOf(FILTER_BY_KEY.get("ageRange"), s);
+             const ethnicities = selectedValues(s, "ethnicity", DEMO_ETHNICITIES);
+             const genders = genderIndexes(s);
              let numerator = 0, denominator = 0;
-
              for (const row of EDUCATION_COUNTS) {
-                 const [a, b] = row.range;
-                 const overlap = Math.max(0, Math.min(hi, b) - Math.max(lo, a) + 1);
-                 if (!overlap) continue;
-                 const weight = overlap / (b - a + 1);
+                 const weight = bucketWeight(row.range, lo, hi);
+                 if (!weight) continue;
                  for (const e of ethnicities) {
-                     for (const i of genderIndexes) {
+                     for (const i of genders) {
                          denominator += row[e].total[i] * weight;
-                         for (const edu of picks) numerator += (row[e][edu]?.[i] || 0) * weight;
+                         for (const edu of s.education) numerator += (row[e][edu]?.[i] || 0) * weight;
                      }
                  }
              }
              return denominator ? numerator / denominator : 0;
          }
-         function computeProbability(contribs) {
-             let p = 1;
+         // Share of all adults matching one filter on its own, ignoring the others.
+         function marginalShare(f, s) {
+             if (!isActive(f, s)) return 1;
+             if (f.kind === "range") {
+                 const [lo, hi] = rangeOf(f, s);
+                 return f.key === "ageRange" ? ageShare(lo, hi, f.buckets) : heightShare(lo, hi, s.gender);
+             }
+             return Math.min(1, selectedOptions(f, s).reduce((sum, o) => sum + o.share, 0));
+         }
+         function computeProbability(s) {
+             const on = key => isActive(FILTER_BY_KEY.get(key), s);
              const handled = new Set();
-             const hasAge = ageIsActive();
-             const hasEthnicity = state.ethnicity.size > 0;
-             const hasReligion = state.religion.size > 0;
-             const hasGender = state.gender.size > 0;
-             const hasMarital = state.marital.size > 0;
-             const hasEducation = state.education.size > 0;
-             const useAgeDemographics = hasAge || hasGender || hasMarital;
-
-             if (useAgeDemographics) {
-                 const demo = ageDemographicCounts();
+             let p = 1;
+             if (on("ageRange") || on("gender") || on("marital")) {
+                 const demo = ageDemographicCounts(s);
                  p *= demo.total / AGE_DEMO_TOTAL;
-                 handled.add("ageRange");
-                 handled.add("gender");
-                 handled.add("marital");
-                 handled.add("ethnicity");
-                 if (hasReligion) {
-                     p *= religionShareWithinDemographic(demo.byEthnicity);
+                 for (const key of ["ageRange", "gender", "marital", "ethnicity"]) handled.add(key);
+                 if (on("religion")) {
+                     p *= religionShareWithinDemographic(s, demo.byEthnicity);
                      handled.add("religion");
                  }
-             } else if (hasEthnicity || hasReligion) {
-                 p *= jointEthnicReligionShare();
+             } else if (on("ethnicity") || on("religion")) {
+                 p *= jointEthnicReligionShare(s);
                  handled.add("ethnicity");
                  handled.add("religion");
              }
-             if (hasEducation) {
-                 p *= educationShareWithinSelection();
+             if (on("education")) {
+                 p *= educationShareWithinSelection(s);
                  handled.add("education");
              }
-             for (const { f, share } of contribs) {
-                 if (!handled.has(f.key)) p *= share;
+             for (const f of FILTERS) {
+                 if (!handled.has(f.key)) p *= marginalShare(f, s);
              }
              return p;
          }
 
          /* ---------- Formatting ---------- */
-         function fmtInt(n) { return Math.round(n).toLocaleString("en-SG"); }
+         const intFmt = new Intl.NumberFormat("en-SG");
+         const compactFmt = new Intl.NumberFormat("en-SG", { notation: "compact", maximumSignificantDigits: 2 });
+         function roundSig(n, sig = 2) {
+             if (n <= 0) return 0;
+             const step = 10 ** (Math.floor(Math.log10(n)) - sig + 1);
+             return Math.round(n / step) * step;
+         }
+         function fmtInt(n) { return intFmt.format(Math.round(n)); }
+         function fmtCount(n) {
+             if (n <= 0) return "0";
+             if (n < 0.5) return "<1";
+             if (n < 100) return fmtInt(n);
+             return fmtInt(roundSig(n));
+         }
+         function fmtCompact(n) {
+             if (n <= 0) return "0";
+             if (n < 0.5) return "<1";
+             if (n < 100) return fmtInt(n);
+             return compactFmt.format(n);
+         }
          function fmtPct(p) {
-             if (p >= 0.01) return (p * 100).toFixed(2) + "%";
-             if (p >= 0.0001) return (p * 100).toFixed(3) + "%";
-             if (p <= 0) return "0%";
-             return (p * 100).toPrecision(2) + "%";
+             const pct = p * 100;
+             if (pct <= 0) return "0%";
+             if (pct >= 99.5) return "100%";
+             if (pct >= 10) return pct.toFixed(0) + "%";
+             if (pct >= 0.0001) return pct.toPrecision(2) + "%";
+             return "<0.0001%";
          }
-         function fmtOneIn(p) {
-             if (p <= 0) return "∞";
-             if (p >= 1) return "1";
+         function fmtOdds(p) {
+             if (p <= 0) return "nobody";
              const n = 1 / p;
-             if (n < 10) return n.toFixed(1);
-             return fmtInt(n);
-         }
-         function fmtCompactInt(n) {
-             return Math.round(n).toLocaleString("en-SG", { notation: "compact", maximumFractionDigits: 1 });
+             if (n < 1.05) return "1 in 1";
+             if (n < 10) return "1 in " + n.toFixed(1);
+             if (n < 100) return "1 in " + Math.round(n);
+             return "1 in " + fmtInt(roundSig(n));
          }
          function joinOr(arr) {
              if (arr.length <= 1) return arr[0] || "";
              if (arr.length === 2) return arr[0] + " or " + arr[1];
              return arr.slice(0, -1).join(", ") + ", or " + arr[arr.length - 1];
          }
-
-         /* ---------- State ---------- */
-         const state = {};
-         for (const f of FILTERS) {
+         function esc(s) {
+             return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+         }
+         function phrase(f, s) {
              if (f.kind === "range") {
-                 state[f.key + "_lo"] = f.defaultLo;
-                 state[f.key + "_hi"] = f.defaultHi;
-             } else {
-                 state[f.key] = new Set();
+                 const [lo, hi] = rangeOf(f, s);
+                 return f.key === "ageRange" ? `aged ${lo}–${hi}` : `${lo}–${hi} cm tall`;
+             }
+             const joined = joinOr(selectedOptions(f, s).map(o => o.phrase || o.label));
+             switch (f.key) {
+                 case "income":    return `earning ${joined} a month`;
+                 case "education": return `educated to ${joined} level`;
+                 case "housing":   return `living in ${joined}`;
+                 default:          return joined;
              }
          }
 
-         /* ---------- Render filter UI ---------- */
-         const filtersEl = document.getElementById("filters");
+         /* ---------- Filter UI ---------- */
+         const $ = id => document.getElementById(id);
+         const els = {
+             filters: $("filters"), activeCount: $("activeCount"), reset: $("reset"), share: $("share"),
+             approx: $("approx"), estNum: $("estNum"), estUnit: $("estUnit"), estDesc: $("estDesc"),
+             statShare: $("statShare"), statOdds: $("statOdds"), live: $("liveSummary"),
+             vizTitle: $("vizTitle"), vizCap: $("vizCap"), stage: $("vizStage"), svg: $("gridSvg"),
+             funnel: $("funnel"), funnelNote: $("funnelNote"),
+             mlState: $("mlState"), mlEst: $("mlEst"), mlMode: $("mlMode"),
+         };
+         const ui = {};
 
-         function render() {
-             filtersEl.innerHTML = "";
+         function make(tag, className, text) {
+             const node = document.createElement(tag);
+             if (className) node.className = className;
+             if (text != null) node.textContent = text;
+             return node;
+         }
+
+         function buildFilters() {
+             const frag = document.createDocumentFragment();
              for (const f of FILTERS) {
-                 const wrap = document.createElement("div");
-                 wrap.className = "filter";
+                 const wrap = make("div", "filter");
+                 const labelId = "filter-" + f.key;
+                 wrap.setAttribute("role", "group");
+                 wrap.setAttribute("aria-labelledby", labelId);
 
-                 const head = document.createElement("div");
-                 head.className = "filter-head";
-                 const label = document.createElement("div");
-                 label.className = "filter-label";
-                 label.textContent = f.label;
-                 head.appendChild(label);
-                 const meta = document.createElement("div");
-                 meta.className = "filter-meta";
-                 meta.dataset.metaFor = f.key;
-                 head.appendChild(meta);
-                 wrap.appendChild(head);
+                 const head = make("div", "filter-head");
+                 const label = make("span", "filter-label", f.label);
+                 label.id = labelId;
+                 const clear = make("button", "clear", "clear");
+                 clear.type = "button";
+                 clear.setAttribute("aria-label", "Clear " + f.label.toLowerCase());
+                 clear.addEventListener("click", () => {
+                     copyFilter(f, blankState(), state);
+                     update();
+                 });
+                 head.append(label);
+                 const u = { wrap, clear };
 
                  if (f.kind === "range") {
-                     const row = document.createElement("div");
-                     row.className = "range-row";
-                     const lo = document.createElement("input");
-                     const hi = document.createElement("input");
-                     lo.type = hi.type = "number";
-                     lo.min = hi.min = f.min; lo.max = hi.max = f.max;
-                     lo.value = state[f.key + "_lo"];
-                     hi.value = state[f.key + "_hi"];
-                     const tick = document.createElement("span"); tick.className = "tick"; tick.textContent = "to";
-                     const unit = document.createElement("span"); unit.className = "tick"; unit.textContent = f.unit || "";
-                     row.append(lo, tick, hi, unit);
-                     wrap.appendChild(row);
-                     const onInput = () => {
-                         state[f.key + "_lo"] = clampNum(Number(lo.value), f.min, f.max);
-                         state[f.key + "_hi"] = clampNum(Number(hi.value), f.min, f.max);
-                         recompute();
-                     };
-                     lo.addEventListener("input", onInput);
-                     hi.addEventListener("input", onInput);
-                 } else {
-                     const chips = document.createElement("div");
-                     chips.className = "chips";
-                     for (const o of f.options) {
-                         const chip = document.createElement("span");
-                         chip.className = "chip" + (state[f.key].has(o.value) ? " on" : "");
-                         chip.textContent = o.label;
-                         chip.addEventListener("click", () => {
-                             const s = state[f.key];
-                             if (f.multi) {
-                                 if (s.has(o.value)) s.delete(o.value); else s.add(o.value);
-                             } else {
-                                 if (s.has(o.value)) s.clear();
-                                 else { s.clear(); s.add(o.value); }
-                             }
-                             chip.classList.toggle("on", s.has(o.value));
-                             if (!f.multi) {
-                                 [...chips.children].forEach((el, i) => {
-                                     el.classList.toggle("on", s.has(f.options[i].value));
-                                 });
-                             }
-                             recompute();
+                     u.value = make("span", "filter-value");
+                     head.append(u.value, clear);
+                     const box = make("div", "range");
+                     const track = make("div", "range-track");
+                     track.append(make("div", "range-fill"));
+                     const a = document.createElement("input");
+                     const b = document.createElement("input");
+                     for (const [input, which] of [[a, "Minimum"], [b, "Maximum"]]) {
+                         input.type = "range";
+                         input.min = f.min;
+                         input.max = f.max;
+                         input.step = 1;
+                         input.setAttribute("aria-label", `${which} ${f.label.toLowerCase()} (${f.unit})`);
+                         // Thumbs may pass each other; the range is always [min, max] of the two.
+                         input.addEventListener("input", () => {
+                             const va = Number(a.value), vb = Number(b.value);
+                             state[f.key + "_lo"] = Math.min(va, vb);
+                             state[f.key + "_hi"] = Math.max(va, vb);
+                             update({ dragging: f.key });
                          });
-                         chips.appendChild(chip);
+                         input.addEventListener("change", () => syncFilters());
                      }
-                     wrap.appendChild(chips);
+                     box.append(track, a, b);
+                     const ends = make("div", "range-ends");
+                     ends.setAttribute("aria-hidden", "true");
+                     ends.append(make("span", null, String(f.min)), make("span", null, `${f.max} ${f.unit}`));
+                     wrap.append(head, box, ends);
+                     Object.assign(u, { box, a, b });
+                 } else {
+                     head.append(clear);
+                     const chips = make("div", "chips");
+                     u.chips = f.options.map(o => {
+                         const btn = make("button", "chip", o.label);
+                         btn.type = "button";
+                         btn.addEventListener("click", () => {
+                             const picked = state[f.key];
+                             if (f.multi) {
+                                 if (picked.has(o.value)) picked.delete(o.value); else picked.add(o.value);
+                             } else {
+                                 const had = picked.has(o.value);
+                                 picked.clear();
+                                 if (!had) picked.add(o.value);
+                             }
+                             update();
+                         });
+                         chips.append(btn);
+                         return { btn, value: o.value };
+                     });
+                     wrap.append(head, chips);
                  }
-                 filtersEl.appendChild(wrap);
+                 ui[f.key] = u;
+                 frag.append(wrap);
              }
+             els.filters.append(frag);
          }
 
-         function clampNum(v, lo, hi) {
-             if (Number.isNaN(v)) return lo;
-             return Math.max(lo, Math.min(hi, v));
-         }
-
-         /* ---------- Compute shares ---------- */
-         function computeShare(f) {
-             if (f.kind === "range") {
-                 let lo = state[f.key + "_lo"], hi = state[f.key + "_hi"];
-                 if (lo > hi) [lo, hi] = [hi, lo];
-                 if (lo <= f.min && hi >= f.max) return { share: 1, label: "Any", picks: [] };
-                 if (f.key === "ageRange") return { share: ageShare(lo, hi, f.buckets), label: `${lo}–${hi}`, picks: [`${lo}–${hi}`] };
-                 if (f.key === "heightRange") return { share: heightShare(lo, hi, state.gender), label: `${lo}–${hi} cm`, picks: [`${lo}–${hi} cm`] };
-             }
-             const s = state[f.key];
-             if (!s || s.size === 0) return { share: 1, label: "Any", picks: [] };
-             let sum = 0;
-             const picks = [];
-             for (const v of s) {
-                 const opt = f.options.find(o => o.value === v);
-                 sum += opt.share;
-                 picks.push(opt.label);
-             }
-             return { share: Math.min(1, sum), label: joinOr(picks), picks };
-         }
-
-         /* ---------- Descriptive sentence ---------- */
-         function buildDescription(contribs) {
-             const parts = [];
-             for (const { f, picks } of contribs) {
-                 if (!picks.length) continue;
-                 const joined = joinOr(picks);
-                 switch (f.key) {
-                     case "gender":     parts.push(joined); break;
-                     case "ageRange":   parts.push("aged " + joined); break;
-                     case "ethnicity":  parts.push(joined); break;
-                     case "religion":   parts.push(joined); break;
-                     case "marital":    parts.push(joined); break;
-                     case "heightRange": parts.push(joined + " tall"); break;
-                     case "income":     parts.push("earning " + joined); break;
-                     case "education":  parts.push("educated to " + joined + " level"); break;
-                     case "housing":    parts.push("living in " + joined); break;
-                     case "smoker":     parts.push(picks[0] === "Non-smoker" ? "a non-smoker" : "a smoker"); break;
-                     case "kids":       parts.push(picks[0] === "No" ? "without children" : "with children"); break;
+         function syncFilters(opts = {}) {
+             for (const f of FILTERS) {
+                 const u = ui[f.key];
+                 const active = isActive(f, state);
+                 u.wrap.classList.toggle("is-active", active);
+                 u.clear.hidden = !active;
+                 if (f.kind === "range") {
+                     const [lo, hi] = rangeOf(f, state);
+                     if (opts.dragging !== f.key) {
+                         u.a.value = lo;
+                         u.b.value = hi;
+                     }
+                     const span = f.max - f.min;
+                     u.box.style.setProperty("--lo", ((lo - f.min) / span).toFixed(4));
+                     u.box.style.setProperty("--hi", ((hi - f.min) / span).toFixed(4));
+                     u.value.textContent = active ? `${lo}–${hi} ${f.unit}` : "any";
+                 } else {
+                     for (const { btn, value } of u.chips) {
+                         btn.setAttribute("aria-pressed", String(state[f.key].has(value)));
+                     }
                  }
              }
-             return parts;
          }
 
-         function renderDescription(parts) {
-             const descEl = document.getElementById("desc");
-             if (!parts.length) { descEl.innerHTML = ""; return; }
-             const last = parts.length > 1 ? parts.pop() : null;
-             let html = parts.map(p => `<span class="tag">${esc(p)}</span>`).join(", ");
-             if (last) html += `, and <span class="tag">${esc(last)}</span>`;
-             descEl.innerHTML = html;
-         }
-         function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-
-         /* ---------- Grid visual ---------- */
+         /* ---------- People grid ---------- */
          const GRID_MAX = 1000;
-         const GRID_STAGE_W = 320;
-         const GRID_STAGE_H = 240;
-         let currentGridProbability = null;
-
-         function getGridStageSize() {
-             const stage = document.querySelector(".visual-stage");
-             if (!stage) return { width: GRID_STAGE_W, height: GRID_STAGE_H };
-             const rect = stage.getBoundingClientRect();
-             return {
-                 width: Math.max(120, Math.round(rect.width) || GRID_STAGE_W),
-                 height: Math.max(120, Math.round(rect.height) || GRID_STAGE_H),
-             };
-         }
+         let currentP = 1;
 
          function layoutGrid(total, width, height) {
              let best = { cols: 1, rows: total, score: 0 };
@@ -1076,215 +976,221 @@
                  const score = Math.min(width / cols, height / rows);
                  if (score > best.score) best = { cols, rows, score };
              }
-             return { cols: best.cols, rows: best.rows };
+             return best;
          }
-
-         function drawGrid(cols, rows, total, matches, stageWidth, stageHeight) {
-             const svg = document.getElementById("gridSvg");
-             const rootStyles = getComputedStyle(document.documentElement);
-             const hitColor = rootStyles.getPropertyValue("--grid-hit").trim() || "#3465a4";
-             const dimColor = rootStyles.getPropertyValue("--grid-dim").trim() || "#babdb6";
-             const padX = Math.max(6, Math.min(20, stageWidth * 0.035));
-             const padY = Math.max(6, Math.min(20, stageHeight * 0.06));
-             const usableW = Math.max(1, stageWidth - padX * 2);
-             const usableH = Math.max(1, stageHeight - padY * 2);
-             const gapBase = Math.min(usableW / cols, usableH / rows);
-             const gap = Math.max(0.6, Math.min(5, gapBase * 0.12));
-             const cellW = (usableW - gap * (cols - 1)) / cols;
-             const cellH = (usableH - gap * (rows - 1)) / rows;
-             const contentW = cellW * cols + gap * (cols - 1);
-             const contentH = cellH * rows + gap * (rows - 1);
-             const offsetX = (stageWidth - contentW) / 2;
-             const offsetY = (stageHeight - contentH) / 2;
-
-             svg.setAttribute("viewBox", `0 0 ${stageWidth} ${stageHeight}`);
-             let out = "";
+         const n1 = v => v.toFixed(1);
+         function personShape(x, y, s) {
+             const bw = s * 0.66, bx = x + (s - bw) / 2, by = y + s * 0.5, br = bw * 0.4, bottom = y + s;
+             return `<circle cx="${n1(x + s / 2)}" cy="${n1(y + s * 0.24)}" r="${n1(s * 0.2)}"/>`
+                 + `<path d="M${n1(bx)} ${n1(bottom)}V${n1(by + br)}A${n1(br)} ${n1(br)} 0 0 1 ${n1(bx + br)} ${n1(by)}`
+                 + `H${n1(bx + bw - br)}A${n1(br)} ${n1(br)} 0 0 1 ${n1(bx + bw)} ${n1(by + br)}V${n1(bottom)}Z"/>`;
+         }
+         function drawGrid(total, matches) {
+             const rect = els.stage.getBoundingClientRect();
+             const W = Math.max(120, Math.round(rect.width) || 320);
+             const H = Math.max(100, Math.round(rect.height) || 200);
+             const { cols, rows } = layoutGrid(total, W, H);
+             const cell = Math.min(W / cols, H / rows);
+             const gap = Math.max(1, cell * 0.16);
+             const size = cell - gap;
+             const ox = (W - (cols * cell - gap)) / 2;
+             const oy = (H - (rows * cell - gap)) / 2;
+             const icons = size >= 12;
+             let hit = "", dim = "";
              for (let i = 0; i < total; i++) {
-                 const r = Math.floor(i / cols), c = i % cols;
-                 const x = offsetX + c * (cellW + gap), y = offsetY + r * (cellH + gap);
-                 const color = i < matches ? hitColor : dimColor;
-                 const headR = Math.max(0.8, Math.min(cellW, cellH) * 0.18);
-                 const headCx = x + cellW / 2;
-                 const headCy = y + cellH * 0.24;
-                 const bodyW = Math.max(1.4, cellW * 0.56);
-                 const bodyH = Math.max(1.9, cellH * 0.42);
-                 const bodyX = x + (cellW - bodyW) / 2;
-                 const bodyY = y + cellH * 0.42;
-                 const bodyR = Math.max(0.8, Math.min(bodyW, bodyH) * 0.22);
-                 out += `<circle cx="${headCx.toFixed(2)}" cy="${headCy.toFixed(2)}" r="${headR.toFixed(2)}" fill="${color}"/>`;
-                 out += `<rect x="${bodyX.toFixed(2)}" y="${bodyY.toFixed(2)}" width="${bodyW.toFixed(2)}" height="${bodyH.toFixed(2)}" rx="${bodyR.toFixed(2)}" ry="${bodyR.toFixed(2)}" fill="${color}"/>`;
+                 const x = ox + (i % cols) * cell;
+                 const y = oy + Math.floor(i / cols) * cell;
+                 const shape = icons
+                     ? personShape(x, y, size)
+                     : `<rect x="${n1(x)}" y="${n1(y)}" width="${n1(size)}" height="${n1(size)}" rx="${n1(size * 0.3)}"/>`;
+                 if (i < matches) hit += shape; else dim += shape;
              }
-             svg.innerHTML = out;
+             els.svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+             els.svg.innerHTML = `<g class="grid-dim">${dim}</g><g class="grid-hit">${hit}</g>`;
+             els.svg.setAttribute("aria-label", `${fmtInt(matches)} of ${fmtInt(total)} figures highlighted`);
          }
-
-         function renderGrid(p) {
-             const capL = document.getElementById("visCapLeft");
-             const capR = document.getElementById("visCapRight");
-             const { width, height } = getGridStageSize();
-             let cols, rows, total, shownTotal, matches, extra = "";
-             currentGridProbability = p;
-
-             if (p >= 0.01 || p === 0) {
-                 total = 100;
-                 shownTotal = 100;
-                 ({ cols, rows } = layoutGrid(total, width, height));
-                 matches = p === 0 ? 0 : Math.max(1, Math.round(p * 100));
-                 if (matches > 100) matches = 100;
+         function renderViz() {
+             const p = currentP;
+             let total = 100, matches, tooThin = false;
+             if (p >= 0.01 || p <= 0) {
+                 matches = p <= 0 ? 0 : Math.min(100, Math.max(1, Math.round(p * 100)));
              } else {
                  const inv = Math.round(1 / p);
-                 if (inv <= GRID_MAX) {
-                     total = inv;
-                     shownTotal = inv;
-                     ({ cols, rows } = layoutGrid(total, width, height));
-                     matches = 1;
-                 } else {
-                     total = GRID_MAX;
-                     shownTotal = GRID_MAX;
-                     ({ cols, rows } = layoutGrid(total, width, height));
-                     matches = 1;
-                     extra = `actual odds 1 in ${fmtInt(inv)}`;
-                 }
+                 total = Math.min(inv, GRID_MAX);
+                 matches = 1;
+                 tooThin = inv > GRID_MAX;
              }
-             drawGrid(cols, rows, total, matches, width, height);
-             capL.innerHTML = `<strong>${fmtInt(matches)}</strong> ${matches === 1 ? "match" : "matches"} out of ${fmtInt(shownTotal)}`;
-             capR.textContent = extra || (shownTotal === 100 ? "sample of 100 adults" : "grid scaled to keep the sample readable");
+             els.vizTitle.textContent = `Out of ${fmtInt(total)} adults`;
+             if (matches === total) els.vizCap.textContent = `All ${fmtInt(total)} fit, so far.`;
+             else if (matches === 0) els.vizCap.textContent = "None of them fit.";
+             else if (tooThin) els.vizCap.innerHTML = `<strong>1</strong> highlighted, but the real odds are ${esc(fmtOdds(p))}, too thin to draw.`;
+             else els.vizCap.innerHTML = `<strong>${fmtInt(matches)}</strong> ${matches === 1 ? "fits" : "fit"} the profile.`;
+             drawGrid(total, matches);
          }
 
-         function renderEmptyGrid() {
-             const capL = document.getElementById("visCapLeft");
-             const capR = document.getElementById("visCapRight");
-             const { width, height } = getGridStageSize();
-             const { cols, rows } = layoutGrid(100, width, height);
-             currentGridProbability = null;
-             drawGrid(cols, rows, 100, 0, width, height);
-             capL.textContent = "Sample view";
-             capR.textContent = "highlights appear as you refine";
+         /* ---------- Breakdown ---------- */
+         function funnelRow({ label, title, count, kept, overall, base }) {
+             const tick = overall == null ? "" : `<span class="tick" style="left:${(overall * 100).toFixed(2)}%"></span>`;
+             const keptText = base ? "" : `<span class="f-kept">keeps ${fmtPct(kept)}</span>`;
+             return `<li${base ? ' class="base"' : ""}>`
+                 + `<div class="f-top"><span class="f-label" title="${esc(title || label)}">${esc(label)}</span>${keptText}<span class="f-count">${fmtCompact(count)}</span></div>`
+                 + `<div class="f-bar" aria-hidden="true"><span class="fill" style="width:${(kept * 100).toFixed(2)}%"></span>${tick}</div>`
+                 + `</li>`;
          }
-
-         function redrawGrid() {
-             if (currentGridProbability == null) renderEmptyGrid();
-             else renderGrid(currentGridProbability);
-         }
-
-         /* ---------- Active filter check ---------- */
-         function hasAnyActiveFilter() {
-             for (const f of FILTERS) {
-                 if (f.kind === "range") {
-                     if (state[f.key + "_lo"] > f.min || state[f.key + "_hi"] < f.max) return true;
-                 } else if (state[f.key].size > 0) return true;
+         function renderFunnel(active) {
+             const rows = [funnelRow({ label: "All adult residents", count: ADULT_POP, kept: 1, base: true })];
+             const partial = blankState();
+             let prev = 1;
+             for (const f of active) {
+                 copyFilter(f, state, partial);
+                 const p = computeProbability(partial);
+                 const label = phrase(f, state);
+                 rows.push(funnelRow({
+                     label,
+                     title: `${f.label}: ${label}`,
+                     count: p * ADULT_POP,
+                     kept: prev > 0 ? Math.min(1, p / prev) : 0,
+                     overall: marginalShare(f, state),
+                 }));
+                 prev = p;
              }
-             return false;
+             els.funnel.innerHTML = rows.join("");
+             els.funnelNote.innerHTML = active.length
+                 ? `Each bar is the share kept from the line above. The <span class="legend-tick"></span> tick is that filter's share across all adults, so a gap means the filters interact.`
+                 : "Filters you pick line up here in order, showing how much each one keeps.";
          }
 
-         function countActiveFilters() {
-             let count = 0;
-             for (const f of FILTERS) {
-                 if (f.kind === "range") {
-                     if (state[f.key + "_lo"] > f.min || state[f.key + "_hi"] < f.max) count++;
-                 } else if (state[f.key].size > 0) count++;
-             }
-             return count;
-         }
+         /* ---------- Main update ---------- */
+         let liveTimer = 0;
+         function update(opts = {}) {
+             syncFilters(opts);
+             const active = FILTERS.filter(f => isActive(f, state));
+             const n = active.length;
+             const p = n ? computeProbability(state) : 1;
+             const count = p * ADULT_POP;
 
-         /* ---------- Main recompute ---------- */
-         function recompute() {
-             const contribs = [];
-             for (const f of FILTERS) {
-                 const { share, label, picks } = computeShare(f);
-                 contribs.push({ f, share, label, picks });
-                 const meta = document.querySelector(`[data-meta-for="${f.key}"]`);
-                 if (meta) meta.textContent = label === "Any" ? "" : fmtPct(share);
-             }
-             const p = computeProbability(contribs);
+             els.activeCount.textContent = n ? `${n} active` : "none active";
+             els.reset.disabled = !n;
 
-             const active = hasAnyActiveFilter();
-             const activeCount = countActiveFilters();
-             const matchCount = p * ADULT_POP;
-             const headEl = document.getElementById("headline");
-             const subEl  = document.getElementById("sub");
-             const kickerEl = document.getElementById("resultKicker");
-             const filterSummaryEl = document.getElementById("filterSummary");
-
-             filterSummaryEl.textContent = active ? `${activeCount} active` : "All adults";
-
-             if (!active) {
-                 kickerEl.textContent = "Start with a few filters";
-                 headEl.innerHTML = "Pick some criteria";
-                 document.getElementById("desc").innerHTML = "Choose filters to estimate how many Singaporeans fit a profile.";
-                 subEl.innerHTML = "Ethnicity/religion, age/gender/marital/ethnicity, and education use Census tables where available.";
-                 renderEmptyGrid();
+             els.approx.hidden = !n || count < 0.5;
+             els.estNum.textContent = n ? fmtCount(count) : fmtInt(ADULT_POP);
+             if (!n) {
+                 els.estUnit.textContent = "adult residents in Singapore";
+                 els.estDesc.textContent = "Pick a few filters to narrow it down.";
              } else {
-                 kickerEl.textContent = `${activeCount} filter${activeCount === 1 ? "" : "s"} active`;
-                 headEl.innerHTML = `About <span class="num">${fmtInt(matchCount)}</span> adults`;
-                 renderDescription(buildDescription(contribs));
-                 subEl.innerHTML = `<b>${fmtPct(p)}</b> of adult residents · <b>1 in ${fmtOneIn(p)}</b> odds · Census correlations where available`;
-                 renderGrid(p);
+                 els.estUnit.textContent = count > 0 && count < 1.5 ? "adult fits this profile" : "adults fit this profile";
+                 els.estDesc.innerHTML = active
+                     .map(f => `<span class="tag">${esc(phrase(f, state))}</span>`)
+                     .join('<span class="sep"> · </span>');
              }
-             writeHash();
+             els.estDesc.classList.toggle("hint", !n);
+             els.statShare.textContent = fmtPct(p);
+             els.statOdds.textContent = n ? fmtOdds(p) : "everyone";
+
+             currentP = p;
+             renderViz();
+             renderFunnel(active);
+
+             els.mlState.textContent = n ? "U:**-" : "U:---";
+             els.mlEst.textContent = !n
+                 ? `${fmtCompact(ADULT_POP)} adults`
+                 : (p > 0 ? `${count < 0.5 ? "" : "≈"}${fmtCompact(count)} · ${fmtOdds(p)}` : "nobody fits");
+             els.mlMode.textContent = n ? `(Probs ${n} filter${n === 1 ? "" : "s"})` : "(Probs)";
+
+             clearTimeout(liveTimer);
+             liveTimer = setTimeout(() => {
+                 els.live.textContent = n
+                     ? `${count < 0.5 ? "Fewer than one adult fits" : `About ${fmtCount(count)} adults fit`}. ${fmtOdds(p)}.`
+                     : "No filters. All adult residents.";
+             }, 500);
+             scheduleHash();
          }
 
          /* ---------- URL hash ---------- */
-         function writeHash() {
+         function hashString(s) {
              const parts = [];
              for (const f of FILTERS) {
+                 if (!isActive(f, s)) continue;
                  if (f.kind === "range") {
-                     if (state[f.key + "_lo"] !== f.defaultLo || state[f.key + "_hi"] !== f.defaultHi)
-                         parts.push(`${f.key}=${state[f.key + "_lo"]}-${state[f.key + "_hi"]}`);
-                 } else if (state[f.key].size > 0)
-                     parts.push(`${f.key}=${[...state[f.key]].join(",")}`);
-             }
-             history.replaceState(null, "", parts.length ? "#" + parts.join("&") : location.pathname);
-         }
-         function readHash() {
-             const h = location.hash.replace(/^#/, "");
-             if (!h) return;
-             for (const kv of h.split("&")) {
-                 const [k, v] = kv.split("=");
-                 const f = FILTERS.find(x => x.key === k);
-                 if (!f || !v) continue;
-                 if (f.kind === "range") {
-                     const [lo, hi] = v.split("-").map(Number);
-                     if (!isNaN(lo) && !isNaN(hi)) {
-                         state[f.key + "_lo"] = clampNum(lo, f.min, f.max);
-                         state[f.key + "_hi"] = clampNum(hi, f.min, f.max);
-                     }
+                     const [lo, hi] = rangeOf(f, s);
+                     parts.push(`${f.key}=${lo}-${hi}`);
                  } else {
-                     state[f.key] = new Set(v.split(",").filter(x => f.options.some(o => o.value === x)));
+                     parts.push(`${f.key}=${selectedOptions(f, s).map(o => o.value).join(",")}`);
                  }
              }
+             return parts.join("&");
+         }
+         function shareUrl() {
+             const h = hashString(state);
+             return location.origin + location.pathname + (h ? "#" + h : "");
+         }
+         let hashTimer = 0;
+         function writeHash() {
+             const h = hashString(state);
+             if (location.hash.replace(/^#/, "") === h) return;
+             try {
+                 history.replaceState(null, "", h ? "#" + h : location.pathname + location.search);
+             } catch {}
+         }
+         function scheduleHash() {
+             clearTimeout(hashTimer);
+             hashTimer = setTimeout(writeHash, 250);
+         }
+         function readHash() {
+             const s = blankState();
+             let h = location.hash.replace(/^#/, "");
+             try { h = decodeURIComponent(h); } catch {}
+             for (const kv of h.split("&")) {
+                 const [k, v] = kv.split("=");
+                 const f = FILTER_BY_KEY.get(k);
+                 if (!f || !v) continue;
+                 if (f.kind === "range") {
+                     const [a, b] = v.split("-").map(Number);
+                     if (!Number.isFinite(a) || !Number.isFinite(b)) continue;
+                     const clamp = x => Math.max(f.min, Math.min(f.max, Math.round(x)));
+                     s[f.key + "_lo"] = clamp(Math.min(a, b));
+                     s[f.key + "_hi"] = clamp(Math.max(a, b));
+                 } else {
+                     const values = v.split(",").filter(x => f.options.some(o => o.value === x));
+                     s[f.key] = new Set(f.multi ? values : values.slice(0, 1));
+                 }
+             }
+             state = s;
          }
 
          /* ---------- Buttons ---------- */
-         document.getElementById("reset").addEventListener("click", () => {
-             for (const f of FILTERS) {
-                 if (f.kind === "range") {
-                     state[f.key + "_lo"] = f.defaultLo;
-                     state[f.key + "_hi"] = f.defaultHi;
-                 } else state[f.key].clear();
-             }
-             render(); recompute();
+         els.reset.addEventListener("click", () => {
+             state = blankState();
+             update();
          });
-         document.getElementById("share").addEventListener("click", async () => {
-             try { await navigator.clipboard.writeText(location.href); } catch {}
+         let shareTimer = 0;
+         els.share.addEventListener("click", async () => {
+             let ok = false;
+             try {
+                 await navigator.clipboard.writeText(shareUrl());
+                 ok = true;
+             } catch {}
+             els.share.textContent = ok ? "Copied ✓" : "Copy failed";
+             clearTimeout(shareTimer);
+             shareTimer = setTimeout(() => { els.share.textContent = "Copy link"; }, 1600);
          });
 
          /* ---------- Init ---------- */
-         const visualStageEl = document.querySelector(".visual-stage");
          let redrawFrame = 0;
-         const scheduleGridRedraw = () => {
+         const scheduleRedraw = () => {
              cancelAnimationFrame(redrawFrame);
-             redrawFrame = requestAnimationFrame(redrawGrid);
+             redrawFrame = requestAnimationFrame(renderViz);
          };
+         if (window.ResizeObserver) new ResizeObserver(scheduleRedraw).observe(els.stage);
+         else window.addEventListener("resize", scheduleRedraw);
+         window.addEventListener("hashchange", () => {
+             readHash();
+             update();
+         });
 
-         if (visualStageEl && window.ResizeObserver) {
-             new ResizeObserver(scheduleGridRedraw).observe(visualStageEl);
-         }
-         window.addEventListener("resize", scheduleGridRedraw);
-
+         buildFilters();
          readHash();
-         render();
-         recompute();
-         scheduleGridRedraw();
+         update();
         </script>
     </body>
 </html>

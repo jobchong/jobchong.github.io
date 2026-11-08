@@ -25,6 +25,7 @@ I'm Job, currently leading teams shipping software and platform tooling.
 - @@html:<a href="assets/job_chong.pdf" target="_blank" rel="noopener">Resume (PDF)</a>@@
 
 * Fun stuff
+- @@html:<a href="stories/">The Briar Patch Library</a>@@: illustrated stories for children learning to spell.
 - @@html:<a href="probs/">Who's out there in Singapore?</a>@@: a back-of-envelope SingStat toy for filtering down to a profile and seeing how rare it might be.
 
 * Recent writing

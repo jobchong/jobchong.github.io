@@ -27,6 +27,7 @@ I'm Job, currently leading teams shipping software and platform tooling.
 * Fun stuff
 - @@html:<a href="https://spelling.cc/">The Briar Patch Library</a>@@: illustrated stories for children learning to spell.
 - @@html:<a href="probs/">Who's out there in Singapore?</a>@@: a back-of-envelope SingStat toy for filtering down to a profile and seeing how rare it might be.
+- @@html:<a href="https://elo-recipes.com" target="_blank" rel="noopener">At the table</a>@@: a recipe notebook.
 
 * Recent writing
 ** Code contributions (2026-03-20)
